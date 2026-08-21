@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Account Health Portal</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; background:#0d0d0d; color:#fff;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+
+  .viz-root {
+    --surface-1:#1a1a19; --page:#0d0d0d;
+    --text-primary:#fff; --text-secondary:#c3c2b7; --text-muted:#898781;
+    --gridline:#2c2c2a; --baseline:#383835;
+    --border:rgba(255,255,255,0.10); --border-strong:rgba(255,255,255,0.18);
+    --good:#0ca30c; --warning:#fab219; --serious:#ec835a; --critical:#e66767;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181;
+  }
+  .app { max-width:1440px; margin:0 auto; padding:28px 26px 72px; }
+
+  header.top { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; flex-wrap:wrap; margin-bottom:22px; }
+  header.top h1 { font-size:22px; font-weight:650; margin:0 0 4px; letter-spacing:-0.01em; }
+  header.top p { margin:0; color:var(--text-secondary); font-size:13.5px; }
+  .top-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
+  .btn { border:1px solid var(--border-strong); background:transparent; color:var(--text-secondary);
+    font-size:12.5px; padding:7px 14px; border-radius:7px; cursor:pointer; font-family:inherit; }
+  .btn:hover { background:rgba(255,255,255,0.07); color:var(--text-primary); }
+  .btn.primary { background:var(--s1); border-color:var(--s1); color:#fff; }
+  .btn.primary:hover { background:#2a78d6; }
+  .btn:disabled { opacity:.45; cursor:not-allowed; }
+  .sync-note { color:var(--text-muted); font-size:11.5px; width:100%; text-align:right; }
+
+  .connect-wrap { max-width:660px; margin:6vh auto 0; }
+  .connect-card { background:var(--surface-1); border:1px solid var(--border); border-radius:14px; padding:28px 30px; }
+  .connect-card h2 { margin:0 0 6px; font-size:19px; font-weight:650; }
+  .connect-card .lede { color:var(--text-secondary); font-size:13px; margin:0 0 22px; line-height:1.6; }
+  .field { margin-bottom:16px; }
+  .field label { display:block; font-size:11px; font-weight:650; color:var(--text-muted);
+    text-transform:uppercase; letter-spacing:.05em; margin-bottom:7px; }
+  .field input { width:100%; background:#111110; border:1px solid var(--border-strong); border-radius:8px;
+    color:var(--text-primary); font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px; padding:10px 12px; }
+  .field input:focus { outline:none; border-color:var(--s1); }
+  .field .hint { font-size:11.5px; color:var(--text-muted); margin-top:6px; line-height:1.5; }
+  .security { display:flex; gap:10px; background:rgba(57,135,229,.07); border:1px solid rgba(57,135,229,.25);
+    border-radius:9px; padding:12px 14px; font-size:12px; color:var(--text-secondary); line-height:1.55; margin:18px 0 20px; }
+  .security b { color:var(--text-primary); }
+  .field textarea { width:100%; min-height:132px; resize:vertical; background:#111110;
+    border:1px solid var(--border-strong); border-radius:8px; color:var(--text-primary);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px; padding:10px 12px; line-height:1.7; }
+  .field textarea:focus { outline:none; border-color:var(--s1); }
+
+  #reviewPanel { display:none; margin-top:20px; }
+  .rev-head { font-size:13px; color:var(--text-secondary); margin-bottom:14px; line-height:1.6; }
+  .rev-group { margin-bottom:16px; }
+  .rev-title { font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--text-muted); margin-bottom:8px; }
+  .rev-row { display:flex; align-items:center; gap:10px; font-size:12.5px; padding:7px 10px;
+    border:1px solid var(--border); border-radius:7px; margin-bottom:6px; background:rgba(255,255,255,.03); }
+  .rev-row .k { flex:none; font-size:9px; font-weight:700; padding:2.5px 6px; border-radius:4px; min-width:52px; text-align:center; }
+  .rev-row.exact .k{background:rgba(12,163,12,.18);color:var(--good)}
+  .rev-row.fuzzy .k{background:rgba(250,178,25,.18);color:var(--warning)}
+  .rev-row.locked .k{background:rgba(57,135,229,.18);color:var(--s1)}
+  .rev-row.miss .k{background:rgba(230,103,103,.18);color:var(--critical)}
+  .rev-row .from { color:var(--text-primary); font-weight:560; }
+  .rev-row .arrow { color:var(--text-muted); }
+  .rev-row .to { color:var(--text-secondary); flex:1; }
+  .rev-row select { background:#111110; border:1px solid var(--border-strong); border-radius:6px;
+    color:var(--text-secondary); font-size:11.5px; padding:4px 7px; font-family:inherit; max-width:230px; }
+  .rev-note { font-size:11.5px; color:var(--text-muted); line-height:1.6; margin-top:4px; }
+  .connect-actions { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .err { background:rgba(230,103,103,.10); border:1px solid rgba(230,103,103,.32); border-radius:8px;
+    padding:11px 13px; font-size:12.5px; color:var(--text-secondary); margin-top:16px; display:none; line-height:1.55; }
+  .err b { color:var(--critical); }
+
+  .progress-wrap { margin-top:20px; display:none; }
+  .prog-track { height:6px; background:var(--gridline); border-radius:3px; overflow:hidden; }
+  .prog-fill { height:100%; background:var(--s1); border-radius:3px; width:0; transition:width .25s; }
+  .prog-label { font-size:12px; color:var(--text-secondary); margin-top:9px; display:flex; justify-content:space-between; }
+  .prog-log { margin-top:12px; max-height:150px; overflow-y:auto; font-size:11.5px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--text-muted); line-height:1.7; }
+  .prog-log .ok{color:var(--good)} .prog-log .bad{color:var(--critical)}
+
+  .banner { display:flex; gap:10px; align-items:flex-start; border-radius:9px; padding:11px 14px;
+    margin-bottom:22px; font-size:12.5px; color:var(--text-secondary); line-height:1.55; }
+  .banner.live { background:rgba(12,163,12,.07); border:1px solid rgba(12,163,12,.28); }
+  .banner.live b { color:var(--good); }
+  .banner.warn { background:rgba(250,178,25,.08); border:1px solid rgba(250,178,25,.28); }
+  .banner.warn b { color:var(--warning); }
+  .banner code { background:rgba(255,255,255,.08); padding:1px 5px; border-radius:4px; }
+
+  .stats-row { display:grid; grid-template-columns:repeat(6,1fr); gap:11px; margin-bottom:22px; }
+  @media (max-width:1100px){ .stats-row{ grid-template-columns:repeat(3,1fr);} }
+  .stat-tile { background:var(--surface-1); border:1px solid var(--border); border-radius:10px; padding:14px 16px; }
+  .stat-tile .label { font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.045em; margin-bottom:7px; }
+  .stat-tile .value { font-size:24px; font-weight:650; line-height:1; }
+  .stat-tile .sub { font-size:11.5px; color:var(--text-secondary); margin-top:6px; }
+  .stat-tile.good .value{color:var(--good)} .stat-tile.warning .value{color:var(--warning)}
+  .stat-tile.critical .value{color:var(--critical)}
+
+  .panel { background:var(--surface-1); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-bottom:20px; }
+  .panel-header { padding:15px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center;
+    justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .panel-header h2 { font-size:14.5px; font-weight:620; margin:0; }
+  .panel-header .count { color:var(--text-muted); font-size:12px; }
+
+  .filter-row { display:flex; gap:7px; flex-wrap:wrap; }
+  .chip { border:1px solid var(--border-strong); background:transparent; color:var(--text-secondary);
+    font-size:11.5px; padding:5px 12px; border-radius:999px; cursor:pointer; font-family:inherit; }
+  .chip:hover { background:rgba(255,255,255,0.06); }
+  .chip.active { background:var(--s1); border-color:var(--s1); color:#fff; }
+
+  .punch-list { display:flex; flex-direction:column; }
+  .punch-item { display:flex; align-items:center; gap:12px; padding:11px 20px; border-bottom:1px solid var(--gridline);
+    font-size:12.5px; cursor:pointer; }
+  .punch-item:last-child{border-bottom:none}
+  .punch-item:hover { background:rgba(255,255,255,0.04); }
+  .punch-item .tag { font-size:9.5px; font-weight:700; letter-spacing:.04em; padding:3.5px 8px; border-radius:4px;
+    flex:none; min-width:122px; text-align:center; }
+  .punch-item.critical .tag{ background:rgba(230,103,103,.18); color:var(--critical);}
+  .punch-item.warning .tag{ background:rgba(250,178,25,.18); color:var(--warning);}
+  .punch-item.serious .tag{ background:rgba(236,131,90,.18); color:var(--serious);}
+  .punch-item.good .tag{ background:rgba(12,163,12,.18); color:var(--good);}
+  .punch-item .who { font-weight:600; color:var(--text-primary); flex:none; }
+  .punch-item .txt { color:var(--text-secondary); }
+  .punch-item .txt b { color:var(--text-primary); font-weight:600; }
+
+  table.roster { width:100%; border-collapse:collapse; font-size:12.5px; }
+  table.roster thead th { text-align:left; font-weight:560; color:var(--text-muted); font-size:10.5px;
+    text-transform:uppercase; letter-spacing:.035em; padding:10px 14px; border-bottom:1px solid var(--border);
+    position:sticky; top:0; background:var(--surface-1); cursor:pointer; white-space:nowrap; }
+  table.roster thead th:hover { color:var(--text-secondary); }
+  table.roster thead th .arrow { opacity:.5; font-size:9px; }
+  table.roster tbody tr { border-bottom:1px solid var(--gridline); cursor:pointer; }
+  table.roster tbody tr:hover { background:rgba(255,255,255,0.04); }
+  table.roster tbody tr.selected { background:rgba(57,135,229,0.13); }
+  table.roster td { padding:11px 14px; vertical-align:middle; white-space:nowrap; }
+  .client-name { font-weight:560; color:var(--text-primary); white-space:normal; }
+  .client-sub { font-size:11px; color:var(--text-muted); margin-top:2px; }
+
+  .badge { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600; padding:4px 10px; border-radius:999px; }
+  .badge .dot{ width:7px; height:7px; border-radius:50%; flex:none;}
+  .badge.healthy{color:var(--good);background:rgba(12,163,12,.14)} .badge.healthy .dot{background:var(--good)}
+  .badge.watch{color:var(--warning);background:rgba(250,178,25,.14)} .badge.watch .dot{background:var(--warning)}
+  .badge.at-risk{color:var(--serious);background:rgba(236,131,90,.16)} .badge.at-risk .dot{background:var(--serious)}
+  .badge.critical{color:var(--critical);background:rgba(230,103,103,.16)} .badge.critical .dot{background:var(--critical)}
+  .badge.error{color:var(--text-muted);background:rgba(255,255,255,.07)} .badge.error .dot{background:var(--text-muted)}
+
+  .delta { font-variant-numeric:tabular-nums; font-weight:600; }
+  .delta.up{color:var(--good)} .delta.down{color:var(--critical)} .delta.flat{color:var(--text-muted)}
+
+  .metric-cell { display:flex; align-items:center; gap:8px; }
+  .mini-track { width:46px; height:6px; border-radius:3px; background:var(--gridline); overflow:hidden; flex:none; }
+  .mini-fill { height:100%; border-radius:3px; }
+
+  .src-tag { font-size:8.5px; font-weight:800; letter-spacing:.06em; padding:2px 5px; border-radius:3px;
+    vertical-align:middle; margin-left:4px; }
+  .src-tag.live { color:var(--good); background:rgba(12,163,12,.16); }
+  .src-tag.imported { color:var(--s1); background:rgba(57,135,229,.16); }
+  .src-tag.err { color:var(--critical); background:rgba(230,103,103,.16); }
+
+  .tag-sm { font-size:10.5px; font-weight:600; padding:3px 8px; border-radius:5px; }
+  .tag-sm.approved{color:var(--good);background:rgba(12,163,12,.14)}
+  .tag-sm.pending{color:var(--warning);background:rgba(250,178,25,.14)}
+  .tag-sm.rejected{color:var(--critical);background:rgba(230,103,103,.16)}
+  .tag-sm.not_started{color:var(--text-muted);background:rgba(255,255,255,.07)}
+
+  .detail-body { padding:20px; }
+  .detail-meta { display:flex; gap:16px; flex-wrap:wrap; font-size:11.5px; color:var(--text-muted); margin-bottom:18px; }
+  .detail-meta span b { color:var(--text-secondary); font-weight:560; }
+  .section-title { font-size:11px; font-weight:650; color:var(--text-muted); text-transform:uppercase;
+    letter-spacing:.05em; margin:0 0 11px; padding-bottom:7px; border-bottom:1px solid var(--gridline); }
+  .detail-cols { display:grid; grid-template-columns:1fr 1fr 1fr; gap:22px; }
+  @media (max-width:1080px){ .detail-cols{grid-template-columns:1fr 1fr} }
+  @media (max-width:720px){ .detail-cols{grid-template-columns:1fr} }
+
+  .kpi-pair { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:20px; }
+  .kpi { border:1px solid var(--border); border-radius:9px; padding:10px 12px; }
+  .kpi .k-label{ font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.035em; margin-bottom:5px; }
+  .kpi .k-value{ font-size:17px; font-weight:650; }
+  .kpi .k-sub{ font-size:10.5px; color:var(--text-muted); margin-top:3px; }
+
+  .source-row { display:flex; align-items:center; gap:9px; margin-bottom:8px; font-size:12px; }
+  .source-row .swatch{ width:9px; height:9px; border-radius:3px; flex:none;}
+  .source-row .name{ flex:1; color:var(--text-secondary);}
+  .source-row .bar-track{ flex-basis:78px; flex-shrink:0; height:6px; background:var(--gridline); border-radius:3px; overflow:hidden;}
+  .source-row .bar-fill{ height:100%; border-radius:3px;}
+  .source-row .pct{ font-variant-numeric:tabular-nums; font-weight:600; width:34px; text-align:right;}
+
+  .chart-box { border:1px solid var(--border); border-radius:9px; padding:12px; margin-bottom:20px; }
+  .chart-cap { font-size:10.5px; color:var(--text-muted); margin-top:6px; display:flex; justify-content:space-between; }
+
+  .funnel-row { display:flex; align-items:center; gap:9px; margin-bottom:7px; font-size:12px; }
+  .funnel-row .f-name{ width:96px; color:var(--text-secondary); flex:none;}
+  .funnel-row .f-track{ flex:1; height:16px; background:var(--gridline); border-radius:4px; overflow:hidden;}
+  .funnel-row .f-fill{ height:100%; border-radius:4px; background:var(--s1);}
+  .funnel-row .f-val{ width:40px; text-align:right; font-variant-numeric:tabular-nums; font-weight:600;}
+
+  .checks { display:flex; flex-direction:column; gap:7px; }
+  .check { display:flex; align-items:center; gap:9px; font-size:12px; padding:7px 10px; border-radius:7px;
+    background:rgba(255,255,255,0.03); border:1px solid var(--border); }
+  .check .ico { width:15px; height:15px; border-radius:50%; flex:none; display:grid; place-items:center;
+    font-size:9px; font-weight:800; color:#0d0d0d; }
+  .check.ok .ico{background:var(--good)} .check.warn .ico{background:var(--warning)}
+  .check.bad .ico{background:var(--critical)} .check.na .ico{background:#4a4a47;color:#c3c2b7}
+  .check .c-name{ flex:1; color:var(--text-secondary);}
+  .check .c-val{ font-weight:600; font-variant-numeric:tabular-nums;}
+  .check.na .c-val{ color:var(--text-muted); font-weight:500;}
+
+  .mini-punch { display:flex; flex-direction:column; gap:7px; }
+  .mini-punch .mp { display:flex; gap:9px; align-items:flex-start; font-size:12px; padding:8px 10px;
+    border-radius:7px; background:rgba(255,255,255,0.03); border:1px solid var(--border); }
+  .mini-punch .mp .tg { font-size:9px; font-weight:700; padding:2.5px 6px; border-radius:4px; flex:none; }
+  .mini-punch .mp.critical .tg{background:rgba(230,103,103,.18);color:var(--critical)}
+  .mini-punch .mp.warning .tg{background:rgba(250,178,25,.18);color:var(--warning)}
+  .mini-punch .mp.serious .tg{background:rgba(236,131,90,.18);color:var(--serious)}
+  .mini-punch .mp.good .tg{background:rgba(12,163,12,.18);color:var(--good)}
+  .mini-punch .mp span:last-child{ color:var(--text-secondary);}
+  .mini-punch .mp b{ color:var(--text-primary); font-weight:600;}
+
+  .tooltip { position:fixed; pointer-events:none; background:#252523; border:1px solid var(--border-strong);
+    border-radius:7px; padding:7px 10px; font-size:11.5px; color:var(--text-primary); z-index:99; opacity:0;
+    transition:opacity .1s; white-space:nowrap; box-shadow:0 4px 14px rgba(0,0,0,.5); }
+
+  .foot-note { font-size:11.5px; color:var(--text-muted); line-height:1.6; margin-top:6px; }
+  .foot-note code { background:rgba(255,255,255,.07); padding:1px 5px; border-radius:4px; }
+
+  ::-webkit-scrollbar{width:8px;height:8px} ::-webkit-scrollbar-thumb{background:#3a3a38;border-radius:4px}
+  .scroll-x { overflow-x:auto; }
+  #portal { display:none; }
+  .mode-tabs { display:flex; gap:6px; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:0; }
+  .mode-tab { background:none; border:none; border-bottom:2px solid transparent; color:var(--text-muted);
+    font-size:13px; font-weight:600; padding:9px 14px; cursor:pointer; font-family:inherit; }
+  .mode-tab:hover { color:var(--text-secondary); }
+  .mode-tab.active { color:var(--text-primary); border-bottom-color:var(--s1); }
+  .mode-body { display:none; } .mode-body.active { display:block; }
+
+  .drop { border:1.5px dashed var(--border-strong); border-radius:11px; padding:30px 22px; text-align:center;
+    cursor:pointer; transition:background .15s, border-color .15s; }
+  .drop:hover, .drop.over { border-color:var(--s1); background:rgba(57,135,229,.06); }
+  .drop .big { font-size:14px; font-weight:600; color:var(--text-primary); margin-bottom:6px; }
+  .drop .small { font-size:12px; color:var(--text-muted); line-height:1.6; }
+
+  .file-row { display:flex; align-items:center; gap:10px; padding:9px 12px; border:1px solid var(--border);
+    border-radius:8px; margin-top:8px; font-size:12.5px; background:rgba(255,255,255,.03); }
+  .file-row .fname { flex:1; color:var(--text-primary); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .file-row .kind { font-size:9px; font-weight:700; padding:3px 7px; border-radius:4px; flex:none; }
+  .file-row .kind.contacts{background:rgba(25,158,112,.18);color:var(--s3)}
+  .file-row .kind.opportunities{background:rgba(57,135,229,.18);color:var(--s1)}
+  .file-row .kind.unknown{background:rgba(230,103,103,.18);color:var(--critical)}
+  .file-row select { background:#111110; border:1px solid var(--border-strong); border-radius:6px;
+    color:var(--text-secondary); font-size:11.5px; padding:4px 7px; font-family:inherit; max-width:210px; }
+  .file-row .rm { color:var(--text-muted); cursor:pointer; padding:0 4px; }
+  .file-row .rm:hover { color:var(--critical); }
+  .file-meta { font-size:10.5px; color:var(--text-muted); }
+</style>
+</head>
+<body>
+<div class="viz-root">
+
+<!-- ================= CONNECT ================= -->
+<div id="connect" class="connect-wrap">
+  <div class="connect-card">
+    <h2>Client Account Health Portal</h2>
+    <p class="lede">Connect an <b>agency-level</b> GoHighLevel token and list your current clients below.
+      The portal finds those accounts among your agency's sub-accounts and pulls each one's numbers live.
+      Everything else in the agency &mdash; test locations, churned clients, internal sub-accounts &mdash; is left out.</p>
+
+    <div class="mode-tabs">
+      <button class="mode-tab active" data-mode="csv">Upload CSV exports</button>
+      <button class="mode-tab" data-mode="api">Connect to the API</button>
+    </div>
+
+    <div class="mode-body active" id="modeCsv">
+      <p class="lede" style="margin-bottom:18px">Export each client's <b>Contacts</b> and <b>Opportunities</b> from
+        GoHighLevel and drop the files here. Nothing is uploaded &mdash; the files are read in your browser and the
+        numbers are worked out locally. No API token and no extra permissions needed.</p>
+
+      <div class="field">
+        <label for="clientListCsv">Your current clients &mdash; one per line</label>
+        <textarea id="clientListCsv" spellcheck="false">Law Offices of Charles Bull
+Culpepper Law Group
+Sabra Law Group PLLC
+Francis Law Center
+Montalvo Law Firm PA
+Law Office of Scott D. Weaver, LLC</textarea>
+        <div class="hint">Files are matched to these names automatically where the filename gives it away;
+          otherwise pick the client from the dropdown beside each file.</div>
+      </div>
+
+      <div class="drop" id="drop">
+        <div class="big">Drop CSV files here, or click to choose</div>
+        <div class="small">Contacts and Opportunities exports, any number of clients at once.<br>
+          Whether a file is contacts or opportunities is worked out from its columns.</div>
+      </div>
+      <input type="file" id="csvInput" accept=".csv,text/csv" multiple style="display:none">
+      <div id="fileList"></div>
+
+      <div class="connect-actions" style="margin-top:18px">
+        <button class="btn primary" id="btnBuildCsv">Build the portal</button>
+        <button class="btn" id="btnImportCold2">Load a saved snapshot instead</button>
+        <input type="file" id="fileInputCold2" accept=".json" style="display:none">
+      </div>
+      <div class="err" id="csvErr"></div>
+
+      <div class="foot-note" style="margin-top:18px">
+        <b>Where to find the exports in GHL.</b> Inside a sub-account: <b>Contacts</b> &rarr; select all &rarr;
+        <b>Export</b>. For deals: <b>Opportunities</b> &rarr; <b>Export</b>. Repeat per client. Filenames that
+        contain the firm's name get matched automatically, so renaming them like
+        <code>culpepper-contacts.csv</code> saves you a step.
+      </div>
+    </div>
+
+    <div class="mode-body" id="modeApi">
+    <div class="field">
+      <label for="tok">Agency access token</label>
+      <input id="tok" type="password" placeholder="Private Integration token, or an agency OAuth access token" autocomplete="off" spellcheck="false">
+      <div class="hint">GHL &rarr; Settings &rarr; Private Integrations &rarr; create a token with read access to
+        Locations, Contacts and Opportunities. An agency OAuth access token works too.</div>
+    </div>
+
+    <div class="field">
+      <label for="cid">Agency company ID</label>
+      <input id="cid" type="text" value="euoOIYojvx8gDhqCNell" spellcheck="false">
+      <div class="hint">Pre-filled from your connected sub-account. Change it if you manage more than one agency.</div>
+    </div>
+
+    <div class="field">
+      <label for="clientList">Your current clients &mdash; one per line</label>
+      <textarea id="clientList" spellcheck="false">Law Offices of Charles Bull
+Culpepper Law Group
+Sabra Law Group PLLC
+Francis Law Center
+Montalvo Law Firm PA
+Law Office of Scott D. Weaver, LLC</textarea>
+      <div class="hint">Only these accounts are shown. Names are matched loosely &mdash; case, punctuation and
+        suffixes like LLP or PC are ignored &mdash; and you'll get to review every match before anything is pulled.
+        Once confirmed, the matched location IDs are stored in your saved snapshot so later runs are exact even
+        if a firm gets renamed in GHL.</div>
+    </div>
+
+    <div class="security">
+      <span>&#128274;</span>
+      <div><b>Your token is held in memory only.</b> It is never written into this file, never saved to disk, and
+      never sent anywhere except <code>services.leadconnectorhq.com</code> directly from your browser. Closing the
+      tab discards it. Because an agency token can read every client's data, keep this file on your own machine
+      and don't host it publicly.</div>
+    </div>
+
+    <div class="connect-actions">
+      <button class="btn primary" id="btnConnect">Connect &amp; match my clients</button>
+      <button class="btn" id="btnDiag">Run diagnostics</button>
+      <button class="btn" id="btnImportCold">Load a saved snapshot instead</button>
+      <input type="file" id="fileInputCold" accept=".json" style="display:none">
+    </div>
+
+    <div class="err" id="connErr"></div>
+    <pre id="diagOut" style="display:none; margin-top:16px; background:#111110; border:1px solid var(--border-strong);
+      border-radius:8px; padding:13px 15px; font-size:11.5px; line-height:1.75; color:var(--text-secondary);
+      white-space:pre-wrap; word-break:break-word; max-height:340px; overflow:auto;
+      font-family:ui-monospace,SFMono-Regular,Menlo,monospace;"></pre>
+
+    <div id="reviewPanel">
+      <div class="rev-head" id="revHead"></div>
+      <div id="revBody"></div>
+      <div class="connect-actions" style="margin-top:16px">
+        <button class="btn primary" id="btnProceed">Pull these clients</button>
+        <button class="btn" id="btnBackEdit">Edit the list</button>
+      </div>
+    </div>
+
+    <div class="progress-wrap" id="progressWrap">
+      <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+      <div class="prog-label"><span id="progText">Starting&hellip;</span><span id="progCount"></span></div>
+      <div class="prog-log" id="progLog"></div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PORTAL ================= -->
+<div id="portal"><div class="app">
+
+  <header class="top">
+    <div>
+      <h1>Client Account Health Portal</h1>
+      <p>Every GHL sub-account under your agency &middot; deliverability, compliance, pipeline &amp; lead performance</p>
+    </div>
+    <div class="top-actions">
+      <button class="btn primary" id="btnRefresh">Refresh</button>
+      <button class="btn" id="btnExport">Save snapshot</button>
+      <button class="btn" id="btnImport">Load snapshot</button>
+      <input type="file" id="fileInput" accept=".json" style="display:none">
+      <div class="sync-note" id="syncNote"></div>
+    </div>
+  </header>
+
+  <div class="banner" id="banner"></div>
+  <div class="stats-row" id="statsRow"></div>
+
+  <div class="panel">
+    <div class="panel-header"><h2>Priority punch list</h2><span class="count" id="punchCount"></span></div>
+    <div class="punch-list" id="portfolioPunch"></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header"><h2>Client accounts</h2><div class="filter-row" id="filterRow"></div></div>
+    <div class="scroll-x" style="max-height:440px; overflow-y:auto;">
+      <table class="roster"><thead><tr id="rosterHead"></tr></thead><tbody id="rosterBody"></tbody></table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header"><h2 id="detailTitle">Client detail</h2><span class="count" id="detailBadge"></span></div>
+    <div class="detail-body">
+      <div class="detail-meta" id="detailMeta"></div>
+      <div class="detail-cols">
+        <div>
+          <div class="section-title">Lead performance</div>
+          <div class="kpi-pair" id="leadKpis"></div>
+          <div class="chart-box">
+            <svg id="sparkline" width="100%" height="104" viewBox="0 0 380 104" preserveAspectRatio="none"></svg>
+            <div class="chart-cap"><span>Daily opportunities created &mdash; last 30 days</span><span id="sparkMax"></span></div>
+          </div>
+          <div class="section-title">Lead sources (attributed)</div>
+          <div id="sourcesBlock"></div>
+        </div>
+        <div>
+          <div class="section-title">Pipeline &amp; conversion</div>
+          <div class="kpi-pair" id="pipeKpis"></div>
+          <div style="margin-bottom:20px" id="funnelBlock"></div>
+          <div class="section-title">Volume &amp; speed</div>
+          <div class="kpi-pair" id="speedKpis"></div>
+        </div>
+        <div>
+          <div class="section-title">Deliverability &amp; compliance</div>
+          <div class="checks" id="deliverChecks" style="margin-bottom:20px"></div>
+          <div class="section-title">Data &amp; automation health</div>
+          <div class="checks" id="autoChecks" style="margin-bottom:20px"></div>
+          <div class="section-title">Punch list</div>
+          <div class="mini-punch" id="clientPunch"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-note" id="footNote"></div>
+</div></div>
+
+<div class="tooltip" id="tooltip"></div>
+</div>
+
+<script>
+/* ==================== GHL LIVE DATA LAYER ==================== */
+const API = "https://services.leadconnectorhq.com";
+const VERSION = "2021-07-28";
+let TOKEN = null, COMPANY_ID = null;
+let DATA = { synced:null, clients:[] };
+let MANUAL = {};
+
+const $ = id => document.getElementById(id);
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+
+async function api(path, {token, params, method="GET", form}={}){
+  const url = new URL(API + path);
+  if (params) Object.entries(params).forEach(([k,v]) => (v!==undefined && v!==null) && url.searchParams.set(k,v));
+  const headers = { "Authorization":"Bearer "+(token||TOKEN), "Version":VERSION, "Accept":"application/json" };
+  const opts = { method, headers };
+  if (form){ headers["Content-Type"]="application/x-www-form-urlencoded"; opts.body=new URLSearchParams(form).toString(); }
+  const res = await fetch(url.toString(), opts);
+  const text = await res.text();
+  let json=null; try{ json = text?JSON.parse(text):null; }catch(e){}
+  if (!res.ok){
+    let msg = (json && (json.message||json.error)) || res.statusText || ("HTTP "+res.status);
+    if (Array.isArray(msg)) msg = msg.join("; ");
+    const err = new Error(msg); err.status = res.status; throw err;
+  }
+  return json;
+}
+
+async function pool(items, limit, fn, onTick){
+  const out = new Array(items.length); let i=0, done=0;
+  async function worker(){
+    while (i < items.length){
+      const idx = i++;
+      try { out[idx] = await fn(items[idx], idx); }
+      catch(e){ out[idx] = { __error: e.message || String(e) }; }
+      done++; onTick && onTick(done, items.length, items[idx], out[idx]);
+    }
+  }
+  await Promise.all(Array.from({length:Math.min(limit, items.length)}, worker));
+  return out;
+}
+
+async function listLocations(){
+  const all=[]; let skip=0;
+  for (let page=0; page<40; page++){
+    const r = await api("/locations/search", { params:{ companyId:COMPANY_ID, limit:100, skip } });
+    const batch = r?.locations || [];
+    all.push(...batch);
+    if (batch.length < 100) break;
+    skip += batch.length;
+  }
+  return all;
+}
+
+const tokenCache = {}, tokenWhy = {};
+async function locationToken(locationId){
+  if (tokenCache[locationId]) return tokenCache[locationId];
+  try {
+    const r = await api("/oauth/locationToken", { method:"POST", form:{ companyId:COMPANY_ID, locationId } });
+    tokenWhy[locationId] = "minted";
+    return tokenCache[locationId] = r.access_token;
+  } catch(e){
+    tokenWhy[locationId] = `mint failed (${e.status||"?"}: ${e.message})`;
+    return tokenCache[locationId] = TOKEN;
+  }
+}
+
+/* Try a call with the location token, then fall back to the agency token,
+   recording the real status of each attempt. */
+async function tryRead(path, params, locId){
+  const attempts=[];
+  const lt = await locationToken(locId);
+  if (lt && lt !== TOKEN){
+    try { return { ok:true, data: await api(path,{token:lt,params}), via:"location token", attempts }; }
+    catch(e){ attempts.push(`location token → ${e.status||"?"} ${e.message}`); }
+  }
+  try { return { ok:true, data: await api(path,{token:TOKEN,params}), via:"agency token", attempts }; }
+  catch(e){ attempts.push(`agency token → ${e.status||"?"} ${e.message}`); }
+  return { ok:false, data:null, attempts };
+}
+
+/* ==================== CLIENT ALLOWLIST MATCHING ==================== */
+let LOCKED = {};              // normalised name -> locationId, carried in snapshots
+let MATCHED = [];             // [{entry, loc}] confirmed for this run
+
+const LEGAL_NOISE = /\b(llp|llc|pllc|pc|pa|inc|ltd|co|law|group|firm|offices?|office|attorneys?|at|the|and)\b/g;
+const norm = s => String(s||"").toLowerCase().replace(/&/g," and ")
+  .replace(/[^a-z0-9\s]/g," ").replace(/\s+/g," ").trim();
+const normStrip = s => norm(s).replace(LEGAL_NOISE," ").replace(/\s+/g," ").trim();
+const tokensOf = s => new Set(normStrip(s).split(" ").filter(Boolean));
+
+function similarity(a,b){
+  const na=norm(a), nb=norm(b);
+  if (na && na===nb) return 1;
+  const sa=normStrip(a), sb=normStrip(b);
+  if (sa && sa===sb) return 0.97;
+  if (sa && sb && (sa.includes(sb) || sb.includes(sa))) return 0.90;
+  const ta=tokensOf(a), tb=tokensOf(b);
+  if (!ta.size || !tb.size) return 0;
+  let inter=0; ta.forEach(t=>{ if (tb.has(t)) inter++; });
+  return (inter / Math.max(ta.size, tb.size)) * 0.85;
+}
+
+function matchClients(entries, locs){
+  const used=new Set(), matched=[], unmatched=[];
+  entries.forEach(entry=>{
+    const lockId = LOCKED[normStrip(entry)];
+    if (lockId){
+      const l = locs.find(x => (x.id||x._id) === lockId);
+      if (l && !used.has(lockId)){ used.add(lockId); matched.push({entry, loc:l, how:"locked", score:1}); return; }
+    }
+    let best=null, bestScore=0;
+    locs.forEach(l=>{
+      const lid=l.id||l._id; if (used.has(lid)) return;
+      const sc = similarity(entry, l.name||"");
+      if (sc > bestScore){ bestScore=sc; best=l; }
+    });
+    if (best && bestScore >= 0.55){
+      used.add(best.id||best._id);
+      matched.push({entry, loc:best, how: bestScore>=0.97?"exact":"fuzzy", score:bestScore});
+    } else unmatched.push(entry);
+  });
+  return { matched, unmatched, excluded: locs.filter(l=>!used.has(l.id||l._id)) };
+}
+
+const fmtDate = d => `${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}-${d.getFullYear()}`;
+
+async function fetchClient(loc){
+  const id = loc.id || loc._id;
+  const now = new Date(), d30 = new Date(now-30*864e5), d60 = new Date(now-60*864e5);
+
+  const [rHead, rOpen, rWon, rLost, rCur, rPrev, rCts] = await Promise.all([
+    tryRead("/contacts/", { locationId:id, limit:1 }, id),
+    tryRead("/opportunities/search", { location_id:id, status:"open", limit:100 }, id),
+    tryRead("/opportunities/search", { location_id:id, status:"won",  limit:100 }, id),
+    tryRead("/opportunities/search", { location_id:id, status:"lost", limit:100 }, id),
+    tryRead("/opportunities/search", { location_id:id, status:"all", date:fmtDate(d30), endDate:fmtDate(now), limit:1 }, id),
+    tryRead("/opportunities/search", { location_id:id, status:"all", date:fmtDate(d60), endDate:fmtDate(d30), limit:1 }, id),
+    tryRead("/contacts/", { locationId:id, limit:100 }, id),
+  ]);
+  const head=rHead.data, open=rOpen.data, won=rWon.data, lost=rLost.data, cur=rCur.data, prev=rPrev.data, ctPage=rCts.data;
+
+  if (!open && !head){
+    const why = [...new Set([...rOpen.attempts, ...rHead.attempts])].join(" · ");
+    throw new Error(`${why || "no data returned"} — token mint: ${tokenWhy[id]||"n/a"}`);
+  }
+
+  const openOps = open?.opportunities || [], wonOps = won?.opportunities || [], lostOps = lost?.opportunities || [];
+  const sample = [...openOps, ...wonOps, ...lostOps];
+
+  const srcOf = o => {
+    const a = o.attributions || [], f = a.find(x=>x.isFirst) || a[0];
+    if (f){
+      const s = (f.utmSource || f.adSource || f.medium || "").toLowerCase();
+      const sess = (f.utmSessionSource || "").toLowerCase();
+      if (s.includes("facebook") || sess.includes("paid social")) return "Facebook / Meta Ads";
+      if (s.includes("google") || s.includes("lsa")) return "Google / LSA";
+      if (sess.includes("crm ui") || f.medium === "manual") return "Manual entry";
+      if (s.includes("referral") || sess.includes("referral")) return "Referral";
+      if (sess.includes("form")) return "Web form";
+      if (s) return s.charAt(0).toUpperCase()+s.slice(1);
+      if (sess) return sess.charAt(0).toUpperCase()+sess.slice(1);
+    }
+    return o.source || "Unattributed";
+  };
+  const sc={}; sample.forEach(o=>{const k=srcOf(o); sc[k]=(sc[k]||0)+1;});
+  const scTot = sample.length || 1;
+  const sources = Object.entries(sc).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([n,v])=>[n, Math.round(v/scTot*100)]);
+
+  const campC={}; sample.forEach(o=>(o.attributions||[]).forEach(a=>{ if(a.isFirst&&a.utmCampaign) campC[a.utmCampaign]=(campC[a.utmCampaign]||0)+1; }));
+  const topCampaign = Object.entries(campC).sort((a,b)=>b[1]-a[1])[0]?.[0] || null;
+
+  const trend = new Array(30).fill(0);
+  sample.forEach(o=>{ if(!o.createdAt) return;
+    const days = Math.floor((now - new Date(o.createdAt))/864e5);
+    if (days>=0 && days<30) trend[29-days]++; });
+  const sampledTotal = trend.reduce((a,b)=>a+b,0);
+  const realTotal = cur?.meta?.total ?? sampledTotal;
+
+  const pipeNames={}; (loc.__pipelines||[]).forEach(p=>pipeNames[p.id]=p.name);
+  const pc={}; openOps.forEach(o=>{const n=pipeNames[o.pipelineId]||"Other"; pc[n]=(pc[n]||0)+1;});
+  const stages = Object.entries(pc).sort((a,b)=>b[1]-a[1]).slice(0,6);
+
+  const stalled = openOps.filter(o=>o.lastStageChangeAt && (now-new Date(o.lastStageChangeAt))/864e5 > 30).length;
+  const noValue = openOps.filter(o=>!(o.monetaryValue>0)).length;
+  const wonVals = wonOps.map(o=>o.monetaryValue||0);
+  const closeDays = wonOps.map(o => o.createdAt && o.lastStatusChangeAt
+      ? Math.round((new Date(o.lastStatusChangeAt)-new Date(o.createdAt))/864e5) : null)
+    .filter(v=>v!==null && v>=0);
+
+  const cts = ctPage?.contacts || [];
+  const RX = /^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$/;
+  const withEmail = cts.filter(c=>(c.email||"").trim());
+  const goodEmail = withEmail.filter(c=>RX.test(c.email.trim()));
+  const totalContacts = head?.meta?.total ?? ctPage?.meta?.total ?? null;
+  const coverage = cts.length ? Math.round(withEmail.length/cts.length*100) : null;
+  const validity = withEmail.length ? Math.round(goodEmail.length/withEmail.length*100) : null;
+
+  const man = MANUAL[id] || {};
+  return {
+    id, name: loc.__listName || loc.name || "(unnamed)",
+    ghlName: (loc.__listName && loc.__listName !== loc.name) ? loc.name : null, live:true,
+    manager: [loc.firstName, loc.lastName].filter(Boolean).join(" ") || "—",
+    plan: loc.settings?.saasSettings?.saasMode ? "SaaS · "+loc.settings.saasSettings.saasMode : "—",
+    onboarded: loc.dateAdded ? String(loc.dateAdded).slice(0,10) : "—",
+    website: loc.website || null,
+    totalContacts,
+    leads: { d30: realTotal, prev30: prev?.meta?.total ?? null, trend,
+             trendPartial: sampledTotal < realTotal, sources, topCampaign },
+    pipeline: { open: open?.meta?.total ?? openOps.length,
+      openValueSample: openOps.reduce((s,o)=>s+(o.monetaryValue||0),0), openSampleSize: openOps.length,
+      won30: won?.meta?.total ?? wonOps.length, lost30: lost?.meta?.total ?? lostOps.length,
+      wonValue: wonVals.reduce((a,b)=>a+b,0),
+      avgDaysToClose: closeDays.length ? Math.round(closeDays.reduce((a,b)=>a+b,0)/closeDays.length) : null,
+      stalled, stalledSampled:true, noValueCount:noValue, noValueSample:openOps.length, stages },
+    speed: { avgFirstResponseMin: man.avgFirstResponseMin ?? null, pctUnder5: man.pctUnder5 ?? null },
+    appts: { booked30: man.booked30 ?? null, showed30: man.showed30 ?? null },
+    deliver: { emailValidity:validity, emailCoverage:coverage,
+      invalidEmails: withEmail.length - goodEmail.length,
+      missingEmails: (totalContacts!==null && coverage!==null) ? Math.round(totalContacts*(100-coverage)/100) : null,
+      bounceRate: man.bounceRate ?? null, smsOptOutRate: man.smsOptOutRate ?? null,
+      a2p: man.a2p ?? null, domainAuth: man.domainAuth ?? null },
+    auto: {}
+  };
+}
+
+function log(msg, cls=""){ const el=$("progLog"); el.innerHTML += `<div class="${cls}">${msg}</div>`; el.scrollTop=el.scrollHeight; }
+function prog(done,total,text){
+  $("progFill").style.width = (total? done/total*100 : 0)+"%";
+  $("progCount").textContent = total? `${done} / ${total}` : "";
+  if (text) $("progText").textContent = text;
+}
+
+let ALL_LOCS = [];
+
+async function connectAndMatch(){
+  $("progressWrap").style.display="block"; $("connErr").style.display="none";
+  $("reviewPanel").style.display="none"; $("progLog").innerHTML=""; $("btnConnect").disabled=true;
+
+  prog(0,0,"Listing sub-accounts…");
+  ALL_LOCS = await listLocations();
+  if (!ALL_LOCS.length) throw new Error("Authenticated, but no sub-accounts came back. Check the company ID and that the token has Locations read access.");
+  log(`Found ${ALL_LOCS.length} sub-account${ALL_LOCS.length>1?"s":""} under this agency.`, "ok");
+
+  const entries = $("clientList").value.split("\n").map(x=>x.trim()).filter(Boolean);
+  if (!entries.length){
+    $("progressWrap").style.display="none"; $("btnConnect").disabled=false;
+    throw new Error("Add your current clients to the list above — one per line. The portal only shows accounts on that list.");
+  }
+  const res = matchClients(entries, ALL_LOCS);
+  renderReview(res);
+  $("progressWrap").style.display="none";
+  $("btnConnect").disabled=false;
+}
+
+function renderReview(res){
+  MATCHED = res.matched;
+  const KIND={exact:"EXACT",fuzzy:"CHECK",locked:"LOCKED"};
+  $("revHead").innerHTML =
+    `<b style="color:var(--text-primary)">${res.matched.length} of ${res.matched.length+res.unmatched.length} clients matched.</b>
+     ${res.excluded.length} other sub-account${res.excluded.length===1?"":"s"} in your agency will be skipped.
+     Check anything marked <b style="color:var(--warning)">CHECK</b> before continuing — you can re-point a row or leave it out.`;
+
+  const opts = l => ALL_LOCS.map(x=>{
+    const xid=x.id||x._id;
+    return `<option value="${xid}" ${xid===(l.id||l._id)?"selected":""}>${x.name||"(unnamed)"}</option>`;
+  }).join("");
+
+  let html = "";
+  if (res.matched.length){
+    html += `<div class="rev-group"><div class="rev-title">Will be pulled</div>` +
+      res.matched.map((m,i)=>`
+        <div class="rev-row ${m.how}">
+          <span class="k">${KIND[m.how]}</span>
+          <span class="from">${m.entry}</span><span class="arrow">→</span>
+          <select data-i="${i}">${opts(m.loc)}<option value="__skip">— skip this client —</option></select>
+        </div>`).join("") + `</div>`;
+  }
+  if (res.unmatched.length){
+    html += `<div class="rev-group"><div class="rev-title">No match found</div>` +
+      res.unmatched.map(u=>`<div class="rev-row miss"><span class="k">MISSING</span>
+        <span class="from">${u}</span><span class="to">— no sub-account in GHL resembles this name</span></div>`).join("") +
+      `<div class="rev-note">Either the name differs a lot from what's in GHL, or the token can't see that location.
+        Fix the spelling in the list and match again, or continue without it.</div></div>`;
+  }
+  if (res.excluded.length){
+    html += `<div class="rev-group"><div class="rev-title">Skipped — not on your list (${res.excluded.length})</div>
+      <div class="rev-note">${res.excluded.map(l=>l.name||"(unnamed)").join(" · ")}</div></div>`;
+  }
+  $("revBody").innerHTML = html;
+
+  $("revBody").querySelectorAll("select").forEach(sel=>sel.addEventListener("change",()=>{
+    const i=+sel.dataset.i;
+    if (sel.value==="__skip"){ MATCHED[i].skip=true; sel.closest(".rev-row").style.opacity=.45; }
+    else { MATCHED[i].skip=false; sel.closest(".rev-row").style.opacity=1;
+           MATCHED[i].loc = ALL_LOCS.find(x=>(x.id||x._id)===sel.value); }
+  }));
+  $("reviewPanel").style.display="block";
+}
+
+async function pullClients(){
+  const chosen = MATCHED.filter(m=>!m.skip);
+  if (!chosen.length){ showErr("Nothing selected to pull."); return; }
+  $("reviewPanel").style.display="none";
+  $("progressWrap").style.display="block"; $("progLog").innerHTML="";
+
+  chosen.forEach(m => LOCKED[normStrip(m.entry)] = m.loc.id || m.loc._id);
+  const locs = chosen.map(m=>{ m.loc.__listName = m.entry; return m.loc; });
+
+  prog(0, locs.length, "Pulling each client…");
+  const results = await pool(locs, 4, async (loc) => {
+    const lid = loc.id || loc._id;
+    try {
+      const tk = await locationToken(lid);
+      try { const p = await api("/opportunities/pipelines", { token:tk, params:{ locationId:lid } });
+            loc.__pipelines = p?.pipelines || []; } catch(e){ loc.__pipelines = []; }
+      return await fetchClient(loc);
+    } catch(e){
+      return { id:lid, name:loc.__listName||loc.name||"(unnamed)", live:false, error:e.message,
+               leads:{}, pipeline:{}, speed:{}, appts:{}, deliver:{}, auto:{} };
+    }
+  }, (done,total,loc,res)=>{
+    prog(done,total,"Pulling each client…");
+    if (res?.error) log(`✕ ${loc.name||loc.id} — ${res.error}`, "bad");
+    else log(`✓ ${res.name}`, "ok");
+  });
+
+  DATA = { synced:new Date().toISOString(), roster:LOCKED, clients:results };
+  const failed = results.filter(c=>c.error).length;
+  log(`Done — ${results.length-failed} loaded${failed?`, ${failed} failed`:""}.`, failed?"bad":"ok");
+  await sleep(450);
+  $("connect").style.display="none"; $("portal").style.display="block";
+  selectedId=null; init();
+}
+
+function showErr(html){ const el=$("connErr"); el.innerHTML=html; el.style.display="block"; }
+
+/* ---- diagnostics: probe one location every way and report raw results ---- */
+$("btnDiag").addEventListener("click", async ()=>{
+  TOKEN = $("tok").value.trim(); COMPANY_ID = $("cid").value.trim();
+  const out = $("diagOut"); out.style.display="block"; out.textContent="Running diagnostics…\n";
+  const line = t => out.textContent += t + "\n";
+  if(!TOKEN){ line("✕ No token entered."); return; }
+
+  const probe = async (label, path, opts) => {
+    try { const r = await api(path, opts);
+      const n = r?.locations?.length ?? r?.contacts?.length ?? r?.opportunities?.length ?? (r?.access_token?"token":"ok");
+      const total = r?.meta?.total;
+      line(`  ✓ ${label} → OK${total!==undefined?` (meta.total ${total})`:""}${typeof n==="number"?` [${n} records]`:""}`);
+      return r;
+    } catch(e){ line(`  ✕ ${label} → ${e.status||"?"} ${e.message}`); return null; }
+  };
+
+  line("");
+  line("1. AGENCY — list sub-accounts");
+  const locs = await probe("GET /locations/search", "/locations/search", { params:{ companyId:COMPANY_ID, limit:100 } });
+  const list = locs?.locations || [];
+  if (!list.length){ line("\n→ Cannot list locations, so nothing else can work. Check the token is agency-level and has a Locations read scope."); return; }
+
+  const L = list[0], lid = L.id || L._id;
+  line(`\n2. LOCATION TOKEN — for "${L.name}" (${lid})`);
+  let lt = null;
+  const mint = await probe("POST /oauth/locationToken", "/oauth/locationToken", { method:"POST", form:{ companyId:COMPANY_ID, locationId:lid } });
+  if (mint?.access_token){ lt = mint.access_token; line("  → minted successfully"); }
+  else line("  → could not mint. Private Integration tokens often cannot; the agency token will be tried directly below.");
+
+  line(`\n3. READ DATA — using the AGENCY token directly`);
+  await probe("GET /contacts/?locationId=", "/contacts/", { token:TOKEN, params:{ locationId:lid, limit:1 } });
+  await probe("GET /opportunities/search?location_id=", "/opportunities/search", { token:TOKEN, params:{ location_id:lid, status:"open", limit:1 } });
+
+  if (lt){
+    line(`\n4. READ DATA — using the LOCATION token`);
+    await probe("GET /contacts/?locationId=", "/contacts/", { token:lt, params:{ locationId:lid, limit:1 } });
+    await probe("GET /opportunities/search?location_id=", "/opportunities/search", { token:lt, params:{ location_id:lid, status:"open", limit:1 } });
+  }
+
+  line("\n— Copy everything above and send it over. It says exactly which permission is missing. —");
+});
+
+$("btnProceed").addEventListener("click", async ()=>{
+  try { await pullClients(); }
+  catch(e){ showErr(`<b>Pull failed.</b> ${e.message}`); $("progressWrap").style.display="none"; }
+});
+$("btnBackEdit").addEventListener("click", ()=>{
+  $("reviewPanel").style.display="none"; $("clientList").focus();
+});
+
+$("btnConnect").addEventListener("click", async ()=>{
+  TOKEN = $("tok").value.trim(); COMPANY_ID = $("cid").value.trim();
+  if(!TOKEN){ showErr("Paste an agency access token first."); return; }
+  if(!COMPANY_ID){ showErr("The agency company ID is required to list sub-accounts."); return; }
+  try { await connectAndMatch(); }
+  catch(e){
+    const hint = e.status===401 ? " &mdash; the token was rejected. Make sure it's an <b>agency</b> token, not a single sub-account one."
+      : e.status===403 ? " &mdash; valid token, missing scope. Add read access to Locations, Contacts and Opportunities."
+      : /postMessage|could not be cloned|structured/i.test(e.message) ? " &mdash; this page is running inside a restricted preview frame. <b>Download this file and open it directly in Chrome</b> — the connection works there."
+      : /Failed to fetch|NetworkError|CSP|Content Security/i.test(e.message) ? " &mdash; the request was blocked. If you're viewing this inside a preview panel, <b>download the file and open it in Chrome instead</b>. Otherwise check for an ad blocker or privacy extension."
+      : "";
+    showErr(`<b>Couldn't load.</b> ${e.message}${hint}`);
+    $("btnConnect").disabled=false; $("progressWrap").style.display="none";
+  }
+});
+
+$("btnRefresh").addEventListener("click", async ()=>{
+  if(!TOKEN){ $("portal").style.display="none"; $("connect").style.display="block"; return; }
+  Object.keys(tokenCache).forEach(k=>delete tokenCache[k]);
+  $("portal").style.display="none"; $("connect").style.display="block";
+  try { await connectAndMatch(); }
+  catch(e){ showErr(`<b>Refresh failed.</b> ${e.message}`); $("btnConnect").disabled=false; }
+});
+
+/* ==================== CSV IMPORT ==================== */
+let CSV_FILES = [];
+
+function parseCSV(text){
+  text = text.replace(/^﻿/, "");
+  const out=[]; let row=[], field="", inQ=false;
+  for (let i=0;i<text.length;i++){
+    const c=text[i];
+    if (inQ){
+      if (c === '"'){ if (text[i+1] === '"'){ field+='"'; i++; } else inQ=false; }
+      else field += c;
+    } else {
+      if (c === '"') inQ = true;
+      else if (c === ","){ row.push(field); field=""; }
+      else if (c === "\n"){ row.push(field); out.push(row); row=[]; field=""; }
+      else if (c === "\r"){ }
+      else field += c;
+    }
+  }
+  if (field.length || row.length){ row.push(field); out.push(row); }
+  return out.filter(r => r.some(x => String(x).trim() !== ""));
+}
+
+function toObjects(grid){
+  if (!grid.length) return { headers:[], rows:[] };
+  const headers = grid[0].map(h => String(h).trim());
+  const rows = grid.slice(1).map(r => {
+    const o = {};
+    headers.forEach((h,i) => o[h] = r[i] !== undefined ? String(r[i]).trim() : "");
+    return o;
+  });
+  return { headers, rows };
+}
+
+const findCol = (headers, ...res) => {
+  for (const re of res){ const h = headers.find(x => re.test(x)); if (h) return h; }
+  return null;
+};
+
+function detectType(headers){
+  const j = headers.join(" | ").toLowerCase();
+  if (/pipeline|opportunity|stage|lead value|deal/.test(j)) return "opportunities";
+  if (/e-?mail|contact|first name|last name|phone/.test(j)) return "contacts";
+  return "unknown";
+}
+
+function parseDate(v){
+  if (!v) return null;
+  let d = new Date(v);
+  if (!isNaN(d)) return d;
+  const m = String(v).match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
+  if (m){
+    const y = m[3].length===2 ? "20"+m[3] : m[3];
+    d = new Date(y+"-"+String(m[1]).padStart(2,"0")+"-"+String(m[2]).padStart(2,"0"));
+    if (!isNaN(d)) return d;
+  }
+  return null;
+}
+
+const csvClientNames = () => $("clientListCsv").value.split("\n").map(x=>x.trim()).filter(Boolean);
+
+function guessClient(filename){
+  const names = csvClientNames();
+  let best=-1, bestScore=0;
+  names.forEach((n,i)=>{
+    const sc = similarity(filename.replace(/\.csv$/i,"").replace(/[_\-]+/g," "), n);
+    if (sc > bestScore){ bestScore=sc; best=i; }
+  });
+  return bestScore >= 0.45 ? best : -1;
+}
+
+function renderFileList(){
+  const names = csvClientNames(), el = $("fileList");
+  if (!CSV_FILES.length){ el.innerHTML=""; return; }
+  el.innerHTML = CSV_FILES.map(function(f,i){
+    return '<div class="file-row">' +
+      '<span class="kind '+f.type+'">'+(f.type==="unknown"?"?":f.type.toUpperCase())+'</span>' +
+      '<span class="fname">'+f.name+'<div class="file-meta">'+f.rows.length.toLocaleString()+' rows</div></span>' +
+      '<select data-i="'+i+'"><option value="-1">&mdash; which client? &mdash;</option>' +
+        names.map(function(n,j){ return '<option value="'+j+'" '+(f.clientIdx===j?"selected":"")+'>'+n+'</option>'; }).join("") +
+      '</select>' +
+      '<span class="rm" data-rm="'+i+'" title="Remove">&#10005;</span>' +
+    '</div>';
+  }).join("");
+  el.querySelectorAll("select").forEach(function(sel){
+    sel.addEventListener("change", function(){ CSV_FILES[+sel.dataset.i].clientIdx = +sel.value; });
+  });
+  el.querySelectorAll("[data-rm]").forEach(function(x){
+    x.addEventListener("click", function(){ CSV_FILES.splice(+x.dataset.rm,1); renderFileList(); });
+  });
+}
+
+async function addFiles(files){
+  for (const file of files){
+    if (!/\.csv$/i.test(file.name)) continue;
+    const text = await file.text();
+    const parsed = toObjects(parseCSV(text));
+    CSV_FILES.push({ name:file.name, type:detectType(parsed.headers),
+                     clientIdx:guessClient(file.name), headers:parsed.headers, rows:parsed.rows });
+  }
+  renderFileList();
+}
+
+function buildFromCsv(){
+  const names = csvClientNames();
+  if (!names.length) throw new Error("Add your client names above first — one per line.");
+  if (!CSV_FILES.length) throw new Error("No CSV files added yet.");
+  const un = CSV_FILES.filter(f => f.clientIdx < 0);
+  if (un.length) throw new Error(un.length + (un.length>1?" files are":" file is") +
+    " not assigned to a client — pick one from the dropdown beside each.");
+
+  const now = new Date(), d30 = new Date(now-30*864e5), d60 = new Date(now-60*864e5);
+  const clients = [];
+
+  names.forEach(function(name, idx){
+    const mine = CSV_FILES.filter(f => f.clientIdx === idx);
+    if (!mine.length) return;
+    const cFile = mine.find(f => f.type === "contacts");
+    const oFile = mine.find(f => f.type === "opportunities");
+
+    let totalContacts=null, coverage=null, validity=null, invalid=0, missing=null;
+    if (cFile){
+      const emailCol = findCol(cFile.headers, /^e-?mail$/i, /e-?mail/i);
+      totalContacts = cFile.rows.length;
+      if (emailCol){
+        const RX = /^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$/;
+        const withE = cFile.rows.filter(r => (r[emailCol]||"").trim());
+        const goodE = withE.filter(r => RX.test(r[emailCol].trim()));
+        coverage = cFile.rows.length ? Math.round(withE.length/cFile.rows.length*100) : null;
+        validity = withE.length ? Math.round(goodE.length/withE.length*100) : null;
+        invalid  = withE.length - goodE.length;
+        missing  = cFile.rows.length - withE.length;
+      }
+    }
+
+    let d30c=0, prev30c=0, openN=0, wonN=0, lostN=0, wonValue=0, openValue=0,
+        stalled=0, noValue=0, closeDays=[], trend=new Array(30).fill(0), srcCount={}, pipeCount={};
+    if (oFile){
+      const H = oFile.headers;
+      const statusCol  = findCol(H, /^status$/i, /opportunity status/i);
+      const valueCol   = findCol(H, /lead value/i, /monetary/i, /^value$/i, /amount/i);
+      const createdCol = findCol(H, /created/i, /date added/i, /^date$/i);
+      const updatedCol = findCol(H, /updated/i, /last status/i, /closed/i);
+      const srcCol     = findCol(H, /^source$/i, /utm.?source/i, /attribution/i, /channel/i);
+      const pipeCol    = findCol(H, /pipeline/i);
+      const stageCol   = findCol(H, /stage/i);
+
+      oFile.rows.forEach(function(r){
+        const st = (statusCol ? r[statusCol] : "").toLowerCase();
+        const val = valueCol ? (parseFloat(String(r[valueCol]).replace(/[^0-9.\-]/g,"")) || 0) : 0;
+        const cr = createdCol ? parseDate(r[createdCol]) : null;
+        const up = updatedCol ? parseDate(r[updatedCol]) : null;
+
+        if (st.indexOf("won") >= 0){ wonN++; wonValue += val;
+          if (cr && up && up>=cr) closeDays.push(Math.round((up-cr)/864e5)); }
+        else if (st.indexOf("lost") >= 0){ lostN++; }
+        else if (st.indexOf("abandon") >= 0){ }
+        else { openN++; openValue += val; if (!(val>0)) noValue++;
+               if (up && (now-up)/864e5 > 30) stalled++; }
+
+        if (cr){
+          if (cr >= d30) d30c++; else if (cr >= d60) prev30c++;
+          const days = Math.floor((now-cr)/864e5);
+          if (days >= 0 && days < 30) trend[29-days]++;
+        }
+        if (srcCol){ const k = (r[srcCol]||"").trim() || "Unattributed"; srcCount[k]=(srcCount[k]||0)+1; }
+        const pk = (pipeCol ? r[pipeCol] : "") || (stageCol ? r[stageCol] : "");
+        if (pk) pipeCount[pk] = (pipeCount[pk]||0)+1;
+      });
+    }
+
+    const totalSrc = Object.values(srcCount).reduce((a,b)=>a+b,0);
+    const sources = Object.entries(srcCount).sort((a,b)=>b[1]-a[1]).slice(0,5)
+      .map(e => [e[0], Math.round(e[1]/(totalSrc||1)*100)]);
+    const stages = Object.entries(pipeCount).sort((a,b)=>b[1]-a[1]).slice(0,6);
+    const man = MANUAL[name] || {};
+
+    clients.push({
+      id:name, name:name, live:false, fromCsv:true, manager:"—", plan:"—", onboarded:"—",
+      sourceFiles: mine.map(f=>f.name).join(", "),
+      totalContacts:totalContacts,
+      leads:{ d30: oFile?d30c:null, prev30: oFile?prev30c:null, trend:trend,
+              trendPartial:false, sources:sources, topCampaign:null },
+      pipeline:{ open: oFile?openN:null, openValueSample:openValue, openSampleSize:openN,
+                 won30: oFile?wonN:null, lost30: oFile?lostN:null, wonValue:wonValue,
+                 avgDaysToClose: closeDays.length ? Math.round(closeDays.reduce((a,b)=>a+b,0)/closeDays.length) : null,
+                 stalled: oFile?stalled:null, stalledSampled:false,
+                 noValueCount: oFile?noValue:null, noValueSample:openN, stages:stages },
+      speed:{ avgFirstResponseMin: man.avgFirstResponseMin != null ? man.avgFirstResponseMin : null,
+              pctUnder5: man.pctUnder5 != null ? man.pctUnder5 : null },
+      appts:{ booked30: man.booked30 != null ? man.booked30 : null,
+              showed30: man.showed30 != null ? man.showed30 : null },
+      deliver:{ emailValidity:validity, emailCoverage:coverage, invalidEmails:invalid, missingEmails:missing,
+                bounceRate: man.bounceRate != null ? man.bounceRate : null,
+                smsOptOutRate: man.smsOptOutRate != null ? man.smsOptOutRate : null,
+                a2p: man.a2p != null ? man.a2p : null,
+                domainAuth: man.domainAuth != null ? man.domainAuth : null },
+      auto:{}
+    });
+  });
+
+  if (!clients.length) throw new Error("No files were matched to any client.");
+  DATA = { synced:new Date().toISOString(), source:"csv", clients:clients };
+  selectedId=null; activeFilter="all";
+  $("connect").style.display="none"; $("portal").style.display="block";
+  init();
+}
+
+document.querySelectorAll(".mode-tab").forEach(function(t){
+  t.addEventListener("click", function(){
+    document.querySelectorAll(".mode-tab").forEach(x=>x.classList.remove("active"));
+    t.classList.add("active");
+    $("modeCsv").classList.toggle("active", t.dataset.mode === "csv");
+    $("modeApi").classList.toggle("active", t.dataset.mode === "api");
+  });
+});
+$("drop").addEventListener("click", function(){ $("csvInput").click(); });
+$("csvInput").addEventListener("change", function(e){ addFiles([].slice.call(e.target.files)); e.target.value=""; });
+["dragenter","dragover"].forEach(function(ev){
+  $("drop").addEventListener(ev, function(e){ e.preventDefault(); $("drop").classList.add("over"); }); });
+["dragleave","drop"].forEach(function(ev){
+  $("drop").addEventListener(ev, function(e){ e.preventDefault(); $("drop").classList.remove("over"); }); });
+$("drop").addEventListener("drop", function(e){
+  if (e.dataTransfer && e.dataTransfer.files) addFiles([].slice.call(e.dataTransfer.files)); });
+$("clientListCsv").addEventListener("change", renderFileList);
+$("btnBuildCsv").addEventListener("click", function(){
+  const el = $("csvErr"); el.style.display="none";
+  try { buildFromCsv(); }
+  catch(err){ el.innerHTML = "<b>Couldn't build.</b> " + err.message; el.style.display="block"; }
+});
+
+/* ==================== METRICS ==================== */
+
+const pct = (cur,prev) => (prev===null||prev===undefined) ? null : (prev===0 ? (cur===0?0:100) : Math.round(((cur-prev)/prev)*100));
+const num = v => (v ?? 0);
+const has = v => v!==null && v!==undefined && v!=="";
+const DASH = '<span style="color:var(--text-muted)">—</span>';
+const money = v => has(v) ? "$"+Math.round(v).toLocaleString() : "—";
+const SEV = { critical:3, serious:2, warning:1, good:0 };
+function fmtMin(m){ if(!has(m)) return "—"; m=+m; return m<60 ? m+" min" : (m/60).toFixed(m%60?1:0)+" hr"; }
+
+function enrich(c){
+  c.change  = has(c.leads?.prev30) ? pct(num(c.leads?.d30), c.leads.prev30) : null;
+  const won=c.pipeline?.won30, lost=c.pipeline?.lost30;
+  c.winRate = (!has(won)||!has(lost)||(won+lost)===0) ? null : Math.round(won/(won+lost)*100);
+  const bk=c.appts?.booked30, sh=c.appts?.showed30;
+  c.noShowRate = (!has(bk)||!has(sh)||bk===0) ? null : Math.round((bk-sh)/bk*100);
+  c.status = c.error ? "error" : statusFor(c);
+  c.issues = c.error
+    ? [{sev:"critical", code:"FETCH_FAILED", txt:`Could not read this account — <b>${c.error}</b>`}]
+    : buildPunch(c);
+  return c;
+}
+
+function statusFor(c){
+  let s=0; const d=c.deliver||{}, p=c.pipeline||{}, sp=c.speed||{};
+  if (has(c.change)){ if(c.change<=-40) s+=3; else if(c.change<=-15) s+=2; else if(c.change<0) s+=1; }
+  if (has(d.a2p)){ if(d.a2p==="rejected") s+=3; else if(d.a2p==="pending") s+=1; else if(d.a2p==="not_started") s+=2; }
+  if (has(d.bounceRate)){ if(d.bounceRate>=8) s+=3; else if(d.bounceRate>=4) s+=2; else if(d.bounceRate>=2.5) s+=1; }
+  if (has(d.emailValidity)){ if(d.emailValidity<70) s+=2; else if(d.emailValidity<85) s+=1; }
+  if (has(d.emailCoverage)){ if(d.emailCoverage<75) s+=2; else if(d.emailCoverage<90) s+=1; }
+  if (d.domainAuth===false) s+=1;
+  if (has(sp.avgFirstResponseMin)){ if(sp.avgFirstResponseMin>=120) s+=2; else if(sp.avgFirstResponseMin>=30) s+=1; }
+  if (c.winRate!==null && c.winRate<25) s+=1;
+  if (has(p.stalled) && p.stalled>=4) s+=1;
+  if (c.noShowRate!==null && c.noShowRate>=40) s+=1;
+  if (has(p.noValueCount) && p.noValueSample && p.noValueCount/p.noValueSample>=0.25) s+=1;
+  if (num(c.leads?.d30)===0) s+=3;
+  if (s>=8) return "critical";
+  if (s>=5) return "at-risk";
+  if (s>=2) return "watch";
+  return "healthy";
+}
+
+function buildPunch(c){
+  const out=[], d=c.deliver||{}, p=c.pipeline||{}, sp=c.speed||{};
+  if (!has(d.a2p)) out.push({sev:"warning", code:"A2P_UNKNOWN", txt:`A2P status <b>not recorded</b> — not exposed by the GHL API, add it manually`});
+  else if (d.a2p==="rejected") out.push({sev:"critical", code:"A2P_REJECTED", txt:`A2P registration <b>rejected</b> — SMS sending is blocked until resubmitted`});
+  else if (d.a2p==="pending") out.push({sev:"warning", code:"A2P_PENDING", txt:`A2P registration still <b>pending</b> — SMS may be throttled`});
+  else if (d.a2p==="not_started") out.push({sev:"serious", code:"A2P_MISSING", txt:`A2P registration <b>not started</b> — SMS will fail on US carriers`});
+
+  if (has(d.bounceRate)){
+    if (d.bounceRate>=8) out.push({sev:"critical", code:"BOUNCE_CRITICAL", txt:`Bounce rate <b>${d.bounceRate}%</b> — sender reputation at risk`});
+    else if (d.bounceRate>=4) out.push({sev:"serious", code:"BOUNCE_HIGH", txt:`Bounce rate elevated at <b>${d.bounceRate}%</b> (target under 2%)`});
+  } else out.push({sev:"warning", code:"BOUNCE_UNKNOWN", txt:`Bounce rate <b>not recorded</b> — needs a feed from your email provider`});
+
+  if (has(d.emailCoverage) && d.emailCoverage<90) out.push({sev:d.emailCoverage<75?"serious":"warning", code:"EMAIL_COVERAGE",
+    txt:`Only <b>${d.emailCoverage}%</b> of contacts have an email address${has(d.missingEmails)?` — roughly <b>${d.missingEmails.toLocaleString()}</b> unreachable by email`:""}`});
+  if (has(d.emailValidity) && d.emailValidity<85) out.push({sev:d.emailValidity<70?"critical":"warning", code:"EMAIL_INVALID",
+    txt:`<b>${d.emailValidity}%</b> of stored emails are well-formed — ${num(d.invalidEmails)} malformed in the sample`});
+  if (d.domainAuth===false) out.push({sev:"serious", code:"DOMAIN_UNAUTH", txt:`Sending domain <b>not authenticated</b> (SPF/DKIM)`});
+
+  if (num(c.leads?.d30)===0) out.push({sev:"critical", code:"ZERO_LEADS", txt:`<b>No new opportunities</b> created in the last 30 days`});
+  else if (has(c.change)){
+    if (c.change<=-40) out.push({sev:"critical", code:"LEAD_COLLAPSE", txt:`Leads down <b>${Math.abs(c.change)}%</b> vs prior 30 days (${num(c.leads?.prev30)} → ${num(c.leads?.d30)})`});
+    else if (c.change<=-15) out.push({sev:"warning", code:"LEAD_DROP", txt:`Leads down <b>${Math.abs(c.change)}%</b> vs prior 30 days`});
+  }
+
+  if (has(sp.avgFirstResponseMin)){
+    if (sp.avgFirstResponseMin>=120) out.push({sev:"critical", code:"SLOW_RESPONSE", txt:`Avg first response <b>${fmtMin(sp.avgFirstResponseMin)}</b> — leads going cold`});
+    else if (sp.avgFirstResponseMin>=30) out.push({sev:"warning", code:"RESPONSE_LAG", txt:`Avg first response <b>${fmtMin(sp.avgFirstResponseMin)}</b>`});
+  }
+  if (has(p.noValueCount) && p.noValueSample && p.noValueCount/p.noValueSample>=0.25) out.push({sev:"warning", code:"NO_DEAL_VALUE",
+    txt:`<b>${Math.round(p.noValueCount/p.noValueSample*100)}%</b> of open opportunities have no monetary value set — forecasting unreliable`});
+  if (has(p.stalled) && p.stalled>=4) out.push({sev:"warning", code:"STALLED_DEALS",
+    txt:`<b>${p.stalled}</b> opportunities stalled with no stage movement${p.stalledSampled?" (in the sampled page)":""}`});
+  if (c.winRate!==null && c.winRate<25 && (num(p.won30)+num(p.lost30))>=3) out.push({sev:"warning", code:"LOW_WIN_RATE",
+    txt:`Win rate <b>${c.winRate}%</b> (${p.won30} won / ${p.lost30} lost)`});
+  if (c.noShowRate!==null && c.noShowRate>=40) out.push({sev:"warning", code:"HIGH_NO_SHOW", txt:`No-show rate <b>${c.noShowRate}%</b>`});
+
+  if (!out.filter(i=>i.sev!=="good").length) out.push({sev:"good", code:"ALL_CLEAR", txt:`No active issues — all available checks passing`});
+  return out.sort((x,y)=>SEV[y.sev]-SEV[x.sev]);
+}
+
+/* ==================== RENDER ==================== */
+let activeFilter="all", selectedId=null, sortKey="status", sortDir=1;
+const STATUS_LABEL={healthy:"Healthy",watch:"Watch","at-risk":"At risk",critical:"Critical",error:"Unreadable"};
+const STATUS_RANK={critical:0,"at-risk":1,watch:2,healthy:3,error:4};
+const SERIES=["var(--s1)","var(--s2)","var(--s3)","var(--s4)","var(--s5)"];
+const clients = () => DATA.clients;
+
+function renderStats(){
+  const cs=clients(), n=cs.length, cnt=s=>cs.filter(c=>c.status===s).length;
+  const ok=cs.filter(c=>!c.error);
+  const totalLeads=ok.reduce((s,c)=>s+num(c.leads?.d30),0);
+  const prevLeads =ok.reduce((s,c)=>s+num(c.leads?.prev30),0);
+  const leadChg = prevLeads ? pct(totalLeads, prevLeads) : null;
+  const totalOpen=ok.reduce((s,c)=>s+num(c.pipeline?.open),0);
+  const wonVal   =ok.reduce((s,c)=>s+num(c.pipeline?.wonValue),0);
+  const tiles=[
+    {label:"Clients", value:n, sub: DATA.source==="csv" ? "from your CSV exports" : "sub-accounts in GHL", cls:""},
+    {label:"Healthy", value:cnt("healthy"), sub:"all checks passing", cls:"good"},
+    {label:"Needs attention", value:cnt("watch")+cnt("at-risk"), sub:"watch or at-risk", cls:"warning"},
+    {label:"Critical", value:cnt("critical")+cnt("error"), sub:cnt("error")?`incl. ${cnt("error")} unreadable`:"act today", cls:"critical"},
+    {label:"Leads (30d)", value:totalLeads.toLocaleString(), sub: leadChg===null?"across portfolio":`${leadChg>=0?"+":""}${leadChg}% vs prior 30d`, cls: leadChg<0?"warning":"good"},
+    {label:"Open opportunities", value:totalOpen.toLocaleString(), sub:`${money(wonVal)} won to date`, cls:""},
+  ];
+  $("statsRow").innerHTML = tiles.map(t=>`<div class="stat-tile ${t.cls}"><div class="label">${t.label}</div>
+    <div class="value">${t.value}</div><div class="sub">${t.sub}</div></div>`).join("");
+}
+
+function renderBanner(){
+  const cs=clients(), failed=cs.filter(c=>c.error).length, b=$("banner");
+  const anyLive = cs.some(c=>c.live);
+  if (failed === cs.length && cs.length){ b.className="banner warn";
+    b.innerHTML=`<span>&#9888;</span><div><b>Connected, but no client data could be read.</b>
+      All ${cs.length} sub-accounts were found by name and ID, so the token and matching are working — only the
+      per-account reads failed. Go back and hit <b>Run diagnostics</b>: it reports the exact HTTP status GoHighLevel
+      returned, which says whether this is a missing scope or a token type that can't read sub-account data.</div>`;
+  } else if (DATA.source === "csv"){ b.className="banner live";
+    b.innerHTML=`<span>&#9679;</span><div><b>Built from your CSV exports \u2014 ${cs.length} client${cs.length===1?"":"s"}.</b>
+      Everything here was worked out from files on your machine. Nothing was uploaded and no API access was used.
+      Re-export and drop the files in again whenever you want fresh numbers.</div>`;
+  } else if (!anyLive){ b.className="banner warn";
+    b.innerHTML=`<span>&#9888;</span><div><b>Viewing a saved snapshot.</b> These numbers are from ${DATA.synced?new Date(DATA.synced).toLocaleString():"an earlier pull"}. Click <b>Refresh</b> to reconnect and pull live.</div>`;
+  } else if (failed){ b.className="banner warn";
+    b.innerHTML=`<span>&#9888;</span><div><b>${cs.length-failed} of ${cs.length} sub-accounts loaded.</b> ${failed} could not be read — they sit at the bottom marked <b>Unreadable</b> with the reason, usually a scope gap on that location.</div>`;
+  } else { b.className="banner live";
+    b.innerHTML=`<span>&#9679;</span><div><b>Live — ${cs.length} client${cs.length===1?"":"s"} pulled from GoHighLevel.</b> Only accounts on your client list are shown; every other sub-account in the agency is skipped. Edit the list on the connect screen to add or drop a client.</div>`;
+  }
+}
+
+function renderFilters(){
+  const opts=[["all","All"],["critical","Critical"],["at-risk","At risk"],["watch","Watch"],["healthy","Healthy"],["error","Unreadable"]];
+  $("filterRow").innerHTML = opts.map(([k,l])=>{
+    const n = k==="all" ? clients().length : clients().filter(c=>c.status===k).length;
+    if (k==="error" && !n) return "";
+    return `<button class="chip ${activeFilter===k?"active":""}" data-filter="${k}">${l} ${n}</button>`;
+  }).join("");
+  document.querySelectorAll("#filterRow .chip").forEach(el=>el.addEventListener("click",()=>{ activeFilter=el.dataset.filter; renderRoster(); }));
+}
+
+function renderPortfolioPunch(){
+  const rows=[];
+  clients().forEach(c=>c.issues.filter(i=>i.sev!=="good").forEach(i=>rows.push({c,i})));
+  rows.sort((a,b)=>SEV[b.i.sev]-SEV[a.i.sev]);
+  const top=rows.slice(0,14);
+  $("punchCount").textContent = rows.length ? `${rows.length} open items · showing top ${top.length}` : "all clear";
+  $("portfolioPunch").innerHTML = top.length ? top.map(r=>`
+    <div class="punch-item ${r.i.sev}" data-id="${r.c.id}">
+      <span class="tag">${r.i.code}</span><span class="who">${r.c.name}</span><span class="txt">— ${r.i.txt}</span></div>`).join("")
+    : `<div class="punch-item good"><span class="tag">ALL_CLEAR</span><span class="txt">No open issues across any client account.</span></div>`;
+  document.querySelectorAll("#portfolioPunch .punch-item[data-id]").forEach(el=>el.addEventListener("click",()=>{
+    selectedId=el.dataset.id; renderRoster(); renderDetail();
+    $("detailTitle").scrollIntoView({behavior:"smooth",block:"center"});
+  }));
+}
+
+const COLUMNS=[
+  {key:"name",label:"Client"},{key:"status",label:"Status"},{key:"leads",label:"Leads 30d"},
+  {key:"change",label:"Δ vs prior"},{key:"open",label:"Open opps"},{key:"winRate",label:"Win rate"},
+  {key:"contacts",label:"Contacts"},{key:"coverage",label:"Email coverage"},{key:"validity",label:"Email valid"},
+  {key:"a2p",label:"A2P"},{key:"bounce",label:"Bounce"},{key:"issues",label:"Issues"},
+];
+function sortVal(c,k){
+  switch(k){
+    case "name": return (c.name||"").toLowerCase();
+    case "status": return STATUS_RANK[c.status];
+    case "leads": return num(c.leads?.d30);
+    case "change": return c.change ?? -999;
+    case "open": return num(c.pipeline?.open);
+    case "winRate": return c.winRate ?? -1;
+    case "contacts": return num(c.totalContacts);
+    case "coverage": return c.deliver?.emailCoverage ?? -1;
+    case "validity": return c.deliver?.emailValidity ?? -1;
+    case "a2p": return ["approved","pending","not_started","rejected"].indexOf(c.deliver?.a2p);
+    case "bounce": return c.deliver?.bounceRate ?? -1;
+    case "issues": return c.issues.filter(i=>i.sev!=="good").length;
+  }
+}
+function barColor(v,kind){
+  if(kind==="validity"||kind==="coverage") return v>=90?"var(--good)":v>=75?"var(--warning)":"var(--critical)";
+  if(kind==="bounce") return v<2?"var(--good)":v<5?"var(--warning)":"var(--critical)";
+  if(kind==="win") return v>=50?"var(--good)":v>=25?"var(--warning)":"var(--critical)";
+}
+
+function renderRoster(){
+  $("rosterHead").innerHTML = COLUMNS.map(c=>`<th data-key="${c.key}">${c.label} <span class="arrow">${sortKey===c.key?(sortDir>0?"▲":"▼"):""}</span></th>`).join("");
+  let list = clients().filter(c=>activeFilter==="all"||c.status===activeFilter);
+  list.sort((a,b)=>{ const x=sortVal(a,sortKey), y=sortVal(b,sortKey); return (x<y?-1:x>y?1:0)*sortDir; });
+
+  $("rosterBody").innerHTML = list.map(c=>{
+    if (c.error) return `<tr data-id="${c.id}" class="${c.id===selectedId?"selected":""}">
+      <td><div class="client-name">${c.name} <span class="src-tag err">ERROR</span></div><div class="client-sub">${c.id}</div></td>
+      <td><span class="badge error"><span class="dot"></span>Unreadable</span></td>
+      <td colspan="9" style="color:var(--text-muted);white-space:normal">${c.error}</td>
+      <td><span style="color:var(--critical);font-weight:600">1</span></td></tr>`;
+    const dc=c.change>0?"up":c.change<0?"down":"flat", ds=c.change>0?"+":"";
+    const openIssues=c.issues.filter(i=>i.sev!=="good").length;
+    const ev=c.deliver?.emailValidity, cov=c.deliver?.emailCoverage, br=c.deliver?.bounceRate;
+    return `<tr data-id="${c.id}" class="${c.id===selectedId?"selected":""}">
+      <td><div class="client-name">${c.name} <span class="src-tag ${c.live?"live":"imported"}">${c.live?"LIVE":(c.fromCsv?"CSV":"SAVED")}</span></div>
+          <div class="client-sub">${c.fromCsv ? (c.sourceFiles||"from CSV") : c.id}</div></td>
+      <td><span class="badge ${c.status}"><span class="dot"></span>${STATUS_LABEL[c.status]}</span></td>
+      <td>${num(c.leads?.d30).toLocaleString()}</td>
+      <td>${has(c.change)?`<span class="delta ${dc}">${ds}${c.change}%</span>`:DASH}</td>
+      <td>${num(c.pipeline?.open).toLocaleString()}</td>
+      <td>${c.winRate===null?DASH:`<span style="color:${barColor(c.winRate,'win')};font-weight:600">${c.winRate}%</span>`}</td>
+      <td>${has(c.totalContacts)?c.totalContacts.toLocaleString():DASH}</td>
+      <td>${has(cov)?`<div class="metric-cell"><div class="mini-track"><div class="mini-fill" style="width:${cov}%;background:${barColor(cov,'coverage')}"></div></div><span>${cov}%</span></div>`:DASH}</td>
+      <td>${has(ev)?`<div class="metric-cell"><div class="mini-track"><div class="mini-fill" style="width:${ev}%;background:${barColor(ev,'validity')}"></div></div><span>${ev}%</span></div>`:DASH}</td>
+      <td>${has(c.deliver?.a2p)?`<span class="tag-sm ${c.deliver.a2p}">${c.deliver.a2p.replace("_"," ").replace(/^\w/,m=>m.toUpperCase())}</span>`:`<span class="tag-sm not_started">Not set</span>`}</td>
+      <td>${has(br)?`<div class="metric-cell"><div class="mini-track"><div class="mini-fill" style="width:${Math.min(br*10,100)}%;background:${barColor(br,'bounce')}"></div></div><span>${br}%</span></div>`:DASH}</td>
+      <td>${openIssues?`<span style="color:var(--critical);font-weight:600">${openIssues}</span>`:`<span style="color:var(--good);font-weight:600">0</span>`}</td>
+    </tr>`;
+  }).join("");
+
+  document.querySelectorAll("#rosterHead th").forEach(th=>th.addEventListener("click",()=>{
+    const k=th.dataset.key; if(sortKey===k) sortDir*=-1; else {sortKey=k; sortDir=1;} renderRoster();
+  }));
+  document.querySelectorAll("#rosterBody tr").forEach(tr=>tr.addEventListener("click",()=>{
+    selectedId=tr.dataset.id; renderRoster(); renderDetail();
+  }));
+}
+
+const kpi=(l,v,s)=>`<div class="kpi"><div class="k-label">${l}</div><div class="k-value">${v}</div>${s?`<div class="k-sub">${s}</div>`:""}</div>`;
+function check(state,name,val,sub){
+  const ico = state==="ok"?"✓":state==="warn"?"!":state==="bad"?"✕":"–";
+  return `<div class="check ${state}"><span class="ico">${ico}</span>
+    <span class="c-name">${name}${sub?` <span style="color:var(--text-muted);font-size:10.5px">· ${sub}</span>`:""}</span>
+    <span class="c-val">${val}</span></div>`;
+}
+
+function renderDetail(){
+  const c = clients().find(x=>x.id===selectedId) || clients()[0];
+  if(!c) return; selectedId=c.id;
+  $("detailTitle").textContent=c.name;
+  $("detailBadge").innerHTML=`<span class="badge ${c.status}"><span class="dot"></span>${STATUS_LABEL[c.status]}</span>`;
+
+  if (c.error){
+    $("detailMeta").innerHTML=`<span>Location <b>${c.id}</b></span><span>Status <b style="color:var(--critical)">Unreadable</b></span>`;
+    ["leadKpis","pipeKpis","speedKpis","sourcesBlock","funnelBlock","deliverChecks","autoChecks"].forEach(x=>$(x).innerHTML="");
+    $("clientPunch").innerHTML=`<div class="mp critical"><span class="tg">FETCH_FAILED</span><span>${c.error}</span></div>`;
+    renderSparkline([]); return;
+  }
+
+  const L=c.leads||{}, P=c.pipeline||{}, S=c.speed||{}, D=c.deliver||{};
+  $("detailMeta").innerHTML=`
+    <span>${c.fromCsv ? "Source files" : "Location"} <b>${c.fromCsv ? (c.sourceFiles||"—") : c.id}</b></span>
+    ${c.ghlName?`<span>In GHL as <b>${c.ghlName}</b></span>`:""}
+    <span>Contact <b>${c.manager||"—"}</b></span>
+    <span>Plan <b>${c.plan||"—"}</b></span>
+    <span>Created <b>${c.onboarded||"—"}</b></span>
+    <span>Source <b style="color:${c.live?'var(--good)':'var(--s1)'}">${c.live?"Live from GHL":(c.fromCsv?"From CSV export":"Saved snapshot")}</b></span>
+    ${L.topCampaign?`<span>Top campaign <b>${L.topCampaign}</b></span>`:""}
+    ${c.website?`<span>Site <b>${String(c.website).replace(/^https?:\/\//,"")}</b></span>`:""}`;
+
+  const dc=c.change>0?"up":c.change<0?"down":"flat", ds=c.change>0?"+":"";
+  $("leadKpis").innerHTML =
+    kpi("Leads (30d)", num(L.d30).toLocaleString(), has(L.prev30)?`prior ${L.prev30}`:"opportunities created") +
+    kpi("Change", has(c.change)?`<span class="delta ${dc}">${ds}${c.change}%</span>`:"—", "vs prior 30 days");
+
+  $("pipeKpis").innerHTML =
+    kpi("Open opportunities", num(P.open).toLocaleString(), P.openSampleSize?`${money(P.openValueSample)} across ${P.openSampleSize} sampled`:"") +
+    kpi("Win rate", c.winRate===null?"—":c.winRate+"%", `${num(P.won30)} won / ${num(P.lost30)} lost`) +
+    kpi("Won value", money(P.wonValue), "closed-won to date") +
+    kpi("Avg days to close", has(P.avgDaysToClose)?P.avgDaysToClose:"—", "closed-won deals");
+
+  $("speedKpis").innerHTML =
+    kpi("Contacts", has(c.totalContacts)?c.totalContacts.toLocaleString():"—", "total in CRM") +
+    kpi("Stalled deals", has(P.stalled)?P.stalled:"—", "no movement 30d+") +
+    kpi("Avg 1st response", fmtMin(S.avgFirstResponseMin), has(S.pctUnder5)?`${S.pctUnder5}% under 5 min`:"not connected") +
+    kpi("No-show rate", c.noShowRate===null?"—":c.noShowRate+"%", "not connected");
+
+  const srcs=L.sources||[];
+  $("sourcesBlock").innerHTML = srcs.length ? srcs.map(([n,p],i)=>`
+    <div class="source-row"><div class="swatch" style="background:${SERIES[i%SERIES.length]}"></div>
+      <div class="name">${n}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${SERIES[i%SERIES.length]}"></div></div>
+      <div class="pct">${p}%</div></div>`).join("")
+    : `<div style="color:var(--text-muted);font-size:12px">No attribution data</div>`;
+
+  const stages=P.stages;
+  $("funnelBlock").innerHTML = stages && stages.length
+    ? `<div class="section-title" style="margin-top:0">Open opportunities by pipeline</div>` +
+      stages.map(([n,v])=>{ const mx=Math.max(...stages.map(s=>s[1]),1);
+        return `<div class="funnel-row"><span class="f-name">${n}</span>
+          <div class="f-track"><div class="f-fill" style="width:${v/mx*100}%"></div></div>
+          <span class="f-val">${v}</span></div>`; }).join("")
+    : "";
+
+  $("deliverChecks").innerHTML=[
+    has(D.emailCoverage)?check(D.emailCoverage>=90?"ok":D.emailCoverage>=75?"warn":"bad","Contacts with an email",`${D.emailCoverage}%`,
+      has(D.missingEmails)?`~${D.missingEmails.toLocaleString()} missing`:"sampled"):check("na","Contacts with an email","—","no data"),
+    has(D.emailValidity)?check(D.emailValidity>=90?"ok":D.emailValidity>=75?"warn":"bad","Email format validity",`${D.emailValidity}%`,`${num(D.invalidEmails)} malformed`)
+      :check("na","Email format validity","—","no data"),
+    has(D.bounceRate)?check(D.bounceRate<2?"ok":D.bounceRate<5?"warn":"bad","Bounce rate",`${D.bounceRate}%`,"target under 2%")
+      :check("na","Bounce rate","Not connected","manual entry"),
+    has(D.a2p)?check(D.a2p==="approved"?"ok":D.a2p==="pending"?"warn":"bad","A2P registration",D.a2p.replace("_"," "),"manual entry")
+      :check("na","A2P registration","Not set","manual entry"),
+    has(D.domainAuth)?check(D.domainAuth?"ok":"bad","Sending domain auth",D.domainAuth?"Verified":"Not set","SPF / DKIM")
+      :check("na","Sending domain auth","Not connected","SPF / DKIM"),
+    has(D.smsOptOutRate)?check(D.smsOptOutRate<2?"ok":D.smsOptOutRate<5?"warn":"bad","SMS opt-out rate",`${D.smsOptOutRate}%`,"")
+      :check("na","SMS opt-out rate","Not connected",""),
+  ].join("");
+
+  $("autoChecks").innerHTML=[
+    (has(P.noValueCount)&&P.noValueSample)
+      ? check(P.noValueCount/P.noValueSample<0.1?"ok":P.noValueCount/P.noValueSample<0.25?"warn":"bad",
+              "Opportunities with a $ value", `${100-Math.round(P.noValueCount/P.noValueSample*100)}%`, "sampled")
+      : check("na","Opportunities with a $ value","—",""),
+    has(P.avgDaysToClose)?check(P.avgDaysToClose<=30?"ok":P.avgDaysToClose<=60?"warn":"bad","Avg days to close",P.avgDaysToClose,"days")
+      :check("na","Avg days to close","—",""),
+    check("na","Workflow failures (7d)","Not connected",""),
+    check("na","Calendars connected","Not connected",""),
+  ].join("");
+
+  $("clientPunch").innerHTML = c.issues.map(i=>`<div class="mp ${i.sev}"><span class="tg">${i.code}</span><span>${i.txt}</span></div>`).join("");
+  window.__trendPartial = !!L.trendPartial;
+  renderSparkline(L.trend||[]);
+}
+
+let sparkPts=[];
+function renderSparkline(data){
+  const svg=$("sparkline");
+  if(!data || !data.length){ svg.innerHTML=""; $("sparkMax").textContent=""; return; }
+  const w=380,h=104,pad=9,max=Math.max(...data,1);
+  const stepX=(w-pad*2)/Math.max(data.length-1,1);
+  sparkPts=data.map((v,i)=>({x:pad+i*stepX, y:h-pad-(v/max)*(h-pad*2), v, i}));
+  const line=sparkPts.map((p,i)=>(i?"L":"M")+p.x.toFixed(1)+","+p.y.toFixed(1)).join(" ");
+  const area=line+` L${sparkPts[sparkPts.length-1].x.toFixed(1)},${h-pad} L${sparkPts[0].x.toFixed(1)},${h-pad} Z`;
+  let grid=""; for(let i=0;i<=3;i++){ const y=pad+i*(h-pad*2)/3;
+    grid+=`<line x1="${pad}" y1="${y.toFixed(1)}" x2="${w-pad}" y2="${y.toFixed(1)}" stroke="#2c2c2a" stroke-width="1"/>`; }
+  svg.innerHTML=`${grid}
+    <defs><linearGradient id="sf" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3987e5" stop-opacity=".32"/><stop offset="100%" stop-color="#3987e5" stop-opacity="0"/></linearGradient></defs>
+    <path d="${area}" fill="url(#sf)"/>
+    <path d="${line}" fill="none" stroke="#3987e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle id="sparkDot" r="4" fill="#3987e5" stroke="#1a1a19" stroke-width="2"
+      cx="${sparkPts[sparkPts.length-1].x.toFixed(1)}" cy="${sparkPts[sparkPts.length-1].y.toFixed(1)}"/>
+    <line id="sparkCross" x1="0" y1="${pad}" x2="0" y2="${h-pad}" stroke="#898781" stroke-width="1" opacity="0"/>`;
+  $("sparkMax").textContent=`peak ${max}/day${window.__trendPartial?" · sampled":""}`;
+}
+
+const tooltip=$("tooltip");
+$("sparkline").addEventListener("mousemove",e=>{
+  if(!sparkPts.length) return;
+  const r=e.currentTarget.getBoundingClientRect(), rel=(e.clientX-r.left)/r.width*380;
+  let best=sparkPts[0]; sparkPts.forEach(p=>{ if(Math.abs(p.x-rel)<Math.abs(best.x-rel)) best=p; });
+  const dot=$("sparkDot"), cross=$("sparkCross");
+  if(dot){ dot.setAttribute("cx",best.x); dot.setAttribute("cy",best.y); }
+  if(cross){ cross.setAttribute("x1",best.x); cross.setAttribute("x2",best.x); cross.setAttribute("opacity",".5"); }
+  const ago=sparkPts.length-1-best.i;
+  tooltip.innerHTML=`<b>${best.v}</b> opportunit${best.v===1?"y":"ies"} · ${ago===0?"today":ago+"d ago"}`;
+  tooltip.style.opacity=1; tooltip.style.left=(e.clientX+14)+"px"; tooltip.style.top=(e.clientY-34)+"px";
+});
+$("sparkline").addEventListener("mouseleave",()=>{
+  tooltip.style.opacity=0; const cr=$("sparkCross"); if(cr) cr.setAttribute("opacity",0);
+  const c=clients().find(x=>x.id===selectedId); if(c) renderSparkline(c.leads?.trend||[]);
+});
+
+/* ---- snapshot save / load ---- */
+$("btnExport").addEventListener("click",()=>{
+  const blob=new Blob([JSON.stringify(DATA,null,2)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+  a.download=`client-health-${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(a.href);
+});
+function wireImport(btnId,inputId){
+  $(btnId).addEventListener("click",()=>$(inputId).click());
+  $(inputId).addEventListener("change",e=>{
+    const f=e.target.files[0]; if(!f) return;
+    const rd=new FileReader();
+    rd.onload=ev=>{
+      try{
+        const parsed=JSON.parse(ev.target.result);
+        if(!parsed.clients||!Array.isArray(parsed.clients)) throw new Error('Missing a top-level "clients" array.');
+        if (parsed.roster) LOCKED = { ...LOCKED, ...parsed.roster };
+        if (parsed.clients.length) $("clientList").value = parsed.clients.map(c=>c.name).join("\n");
+        parsed.clients.forEach(c=>{
+          c.live=false;
+          MANUAL[c.id]={ a2p:c.deliver?.a2p, bounceRate:c.deliver?.bounceRate, domainAuth:c.deliver?.domainAuth,
+            smsOptOutRate:c.deliver?.smsOptOutRate, avgFirstResponseMin:c.speed?.avgFirstResponseMin,
+            pctUnder5:c.speed?.pctUnder5, booked30:c.appts?.booked30, showed30:c.appts?.showed30 };
+        });
+        DATA=parsed; selectedId=null; activeFilter="all";
+        $("connect").style.display="none"; $("portal").style.display="block";
+        init();
+      }catch(err){ alert("Could not read that file:\n\n"+err.message); }
+    };
+    rd.readAsText(f);
+  });
+}
+wireImport("btnImport","fileInput");
+wireImport("btnImportCold","fileInputCold");
+wireImport("btnImportCold2","fileInputCold2");
+
+/* Warn early if we're inside a preview/sandbox frame, where cross-origin calls are blocked. */
+(function(){
+  let framed = false;
+  try { framed = window.self !== window.top; } catch(e){ framed = true; }
+  if (framed){
+    const el = $("connErr");
+    el.innerHTML = `<b>This is a preview panel, so the buttons below are switched off.</b> Requests to GoHighLevel
+      cannot leave this frame — running anything here only ever produces <code>Failed to fetch</code>, whatever your
+      token is.<br><br>
+      <b>Open the file properly instead:</b><br>
+      1. Open <b>Finder</b> → <b>Downloads</b><br>
+      2. Find <code>client_health_portal.html</code> (or the newest numbered copy)<br>
+      3. <b>Right-click it → Open With → Google Chrome</b><br><br>
+      The page will fill the whole window with <code>file:///Users/…</code> in the address bar and no Claude
+      interface anywhere. This message will be gone, the buttons will work, and you can run diagnostics there.`;
+    el.style.display = "block";
+    ["btnConnect","btnDiag","btnImportCold"].forEach(id=>{
+      const btn = document.getElementById(id); if(!btn) return;
+      btn.disabled = true; btn.style.pointerEvents = "none";
+    });
+    $("btnConnect").textContent = "Open this file in Chrome first";
+  }
+})();
+
+/* ---- init ---- */
+function init(){
+  DATA.clients.forEach(enrich);
+  if(!selectedId && DATA.clients.length){
+    const worst=[...DATA.clients].sort((a,b)=>STATUS_RANK[a.status]-STATUS_RANK[b.status])[0];
+    selectedId=worst.id;
+  }
+  $("syncNote").textContent = DATA.synced ? "Synced "+new Date(DATA.synced).toLocaleString() : "";
+  $("footNote").innerHTML = DATA.source === "csv"
+    ? `Figures are computed from the CSV exports you supplied. "Leads (30d)" counts opportunities created in the last
+       30 days against the 30 before, from each row's created date. Any column your export doesn't contain shows as
+       <b>\u2014</b> rather than a guess. <b>A2P status</b>, <b>bounce rate</b>, <b>domain auth</b> and <b>response times</b>
+       aren't present in GHL exports at all \u2014 put them into a saved snapshot and load it back to carry them forward.`
+    : `Leads, pipeline, contacts, attribution and email quality are read live from GoHighLevel per sub-account.
+    Figures taken from the most recent 100 records rather than the full set are labelled <b>sampled</b>.
+    <b>A2P status</b>, <b>bounce rate</b>, <b>domain auth</b>, <b>SMS opt-out</b> and <b>workflow failures</b> are not exposed by the GHL API and read
+    <b>Not connected</b> until supplied. To keep them: fill those fields in a saved snapshot, then <b>Load snapshot</b> before refreshing &mdash;
+    the portal carries them forward onto the live data. Your access token stays in memory and is discarded when this tab closes.`;
+  renderStats(); renderBanner(); renderFilters(); renderRoster(); renderDetail(); renderPortfolioPunch();
+}
+</script>
+</body>
+</html>

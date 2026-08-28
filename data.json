@@ -1,5 +1,5 @@
 {
- "synced": "2026-08-27T21:49:28.023Z",
+ "synced": "2026-08-28T09:43:21.183Z",
  "source": "api",
  "clients": [
   {
@@ -11,51 +11,51 @@
    "plan": "SaaS · activated",
    "onboarded": "2026-01-27",
    "website": "https://culpepperlawgroup.com",
-   "totalContacts": 3026,
+   "totalContacts": 3027,
    "leads": {
-    "d30": 122,
+    "d30": 120,
     "prev30": 152,
     "trend": [
-     2,
+     1,
+     1,
+     4,
      0,
+     2,
+     6,
+     6,
+     2,
      3,
+     3,
+     0,
      2,
-     2,
+     1,
+     7,
+     8,
      5,
+     3,
+     2,
+     0,
+     4,
+     0,
+     1,
+     1,
+     1,
+     0,
+     0,
+     3,
      6,
-     2,
      3,
-     4,
-     0,
-     2,
-     1,
-     3,
-     9,
-     6,
-     4,
-     2,
-     1,
-     4,
-     0,
-     1,
-     1,
-     1,
-     0,
-     0,
-     3,
-     4,
-     4,
      2
     ],
     "trendPartial": true,
     "sources": [
      [
       "Manual entry",
-      56
+      57
      ],
      [
       "Facebook / Meta Ads",
-      38
+      37
      ],
      [
       "Form",
@@ -69,16 +69,16 @@
     "topCampaign": null
    },
    "pipeline": {
-    "open": 1229,
-    "openValueSample": 560500,
+    "open": 1227,
+    "openValueSample": 569500,
     "openSampleSize": 100,
     "won30": 36,
-    "lost30": 54,
+    "lost30": 57,
     "wonValue": 579998,
     "avgDaysToClose": 24,
     "stalled": 47,
     "stalledSampled": true,
-    "noValueCount": 32,
+    "noValueCount": 31,
     "noValueSample": 100,
     "stages": [
      [
@@ -115,14 +115,14 @@
     "emailValidity": 100,
     "emailCoverage": 83,
     "invalidEmails": 0,
-    "missingEmails": 514,
+    "missingEmails": 515,
     "bounceRate": null,
     "smsOptOutRate": null,
     "a2p": null,
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 151,
+    "smsSent": 150,
     "smsFailed": 2,
     "smsFailRate": 1.3,
     "callTotal": 13,
@@ -131,7 +131,7 @@
     "callFailRate": 0,
     "avgCallSec": 153,
     "shortCalls": 0,
-    "emailSent": 407,
+    "emailSent": 406,
     "conversationsSampled": 100,
     "error": null
    },

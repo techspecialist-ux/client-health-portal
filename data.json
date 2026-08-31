@@ -1,5 +1,5 @@
 {
- "synced": "2026-08-31T12:48:17.014Z",
+ "synced": "2026-08-31T22:30:19.658Z",
  "source": "api",
  "clients": [
   {
@@ -13,25 +13,24 @@
    "website": "https://culpepperlawgroup.com",
    "totalContacts": 3034,
    "leads": {
-    "d30": 123,
+    "d30": 129,
     "prev30": 142,
     "trend": [
-     1,
-     1,
+     2,
+     5,
      6,
-     7,
+     2,
+     3,
+     4,
+     0,
+     2,
      1,
      4,
-     2,
-     0,
-     2,
-     1,
-     7,
      8,
      6,
+     4,
      2,
-     2,
-     0,
+     1,
      4,
      0,
      1,
@@ -40,22 +39,23 @@
      0,
      0,
      3,
-     5,
-     2,
-     2,
+     3,
+     4,
+     0,
      5,
      0,
-     2
+     0,
+     4
     ],
     "trendPartial": true,
     "sources": [
      [
       "Manual entry",
-      56
+      57
      ],
      [
       "Facebook / Meta Ads",
-      38
+      37
      ],
      [
       "Form",
@@ -69,43 +69,43 @@
     "topCampaign": null
    },
    "pipeline": {
-    "open": 1228,
-    "openValueSample": 587500,
+    "open": 1225,
+    "openValueSample": 569500,
     "openSampleSize": 100,
-    "won30": 36,
-    "lost30": 57,
-    "wonValue": 579998,
+    "won30": 38,
+    "lost30": 58,
+    "wonValue": 587998,
     "avgDaysToClose": 24,
-    "stalled": 47,
+    "stalled": 49,
     "stalledSampled": true,
-    "noValueCount": 29,
+    "noValueCount": 31,
     "noValueSample": 100,
     "stages": [
      [
       "Personal Injury",
-      52
+      49
      ],
      [
       "Family Law",
-      29
+      31
      ],
      [
       "Real Estate",
-      10
+      11
      ],
      [
       "Bankruptcy Pipeline",
-      7
+      6
      ],
      [
       "Unqualified Leads Pipeline",
-      2
+      3
      ]
     ]
    },
    "speed": {
-    "avgFirstResponseMin": 378,
-    "pctUnder5": 13
+    "avgFirstResponseMin": 200,
+    "pctUnder5": 11
    },
    "appts": {
     "booked30": null,
@@ -122,16 +122,16 @@
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 149,
-    "smsFailed": 1,
-    "smsFailRate": 0.7,
-    "callTotal": 12,
+    "smsSent": 154,
+    "smsFailed": 2,
+    "smsFailRate": 1.3,
+    "callTotal": 11,
     "callFailed": 0,
-    "callAnswered": 12,
+    "callAnswered": 11,
     "callFailRate": 0,
-    "avgCallSec": 148,
+    "avgCallSec": 138,
     "shortCalls": 1,
-    "emailSent": 396,
+    "emailSent": 407,
     "conversationsSampled": 100,
     "error": null
    },

@@ -1,5 +1,5 @@
 {
- "synced": "2026-09-02T03:03:20.958Z",
+ "synced": "2026-09-02T10:42:27.054Z",
  "source": "api",
  "clients": [
   {
@@ -11,25 +11,25 @@
    "plan": "SaaS · activated",
    "onboarded": "2026-01-27",
    "website": "https://culpepperlawgroup.com",
-   "totalContacts": 3035,
+   "totalContacts": 3036,
    "leads": {
-    "d30": 121,
+    "d30": 122,
     "prev30": 149,
     "trend": [
-     5,
      6,
-     3,
-     3,
-     3,
+     7,
+     1,
+     4,
+     2,
      0,
      2,
      1,
-     5,
-     10,
-     5,
+     7,
+     8,
+     6,
      2,
      2,
-     1,
+     0,
      4,
      0,
      1,
@@ -38,24 +38,24 @@
      0,
      0,
      3,
-     4,
-     3,
-     0,
      5,
+     2,
+     1,
+     4,
      0,
      1,
      3,
-     1
+     2
     ],
     "trendPartial": true,
     "sources": [
      [
       "Manual entry",
-      57
+      56
      ],
      [
       "Facebook / Meta Ads",
-      37
+      38
      ],
      [
       "Form",
@@ -69,25 +69,25 @@
     "topCampaign": null
    },
    "pipeline": {
-    "open": 1224,
-    "openValueSample": 569500,
+    "open": 1225,
+    "openValueSample": 578500,
     "openSampleSize": 100,
     "won30": 39,
     "lost30": 58,
     "wonValue": 596998,
     "avgDaysToClose": 24,
-    "stalled": 50,
+    "stalled": 49,
     "stalledSampled": true,
-    "noValueCount": 31,
+    "noValueCount": 30,
     "noValueSample": 100,
     "stages": [
      [
       "Personal Injury",
-      49
+      50
      ],
      [
       "Family Law",
-      31
+      30
      ],
      [
       "Real Estate",
@@ -105,7 +105,7 @@
    },
    "speed": {
     "avgFirstResponseMin": 200,
-    "pctUnder5": 13
+    "pctUnder5": 14
    },
    "appts": {
     "booked30": null,
@@ -122,7 +122,7 @@
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 146,
+    "smsSent": 148,
     "smsFailed": 4,
     "smsFailRate": 2.7,
     "callTotal": 8,
@@ -131,7 +131,7 @@
     "callFailRate": 0,
     "avgCallSec": 129,
     "shortCalls": 1,
-    "emailSent": 397,
+    "emailSent": 396,
     "conversationsSampled": 100,
     "error": null
    },

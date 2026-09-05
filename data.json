@@ -1,5 +1,5 @@
 {
- "synced": "2026-09-05T03:06:29.545Z",
+ "synced": "2026-09-05T10:00:37.190Z",
  "source": "api",
  "clients": [
   {
@@ -11,7 +11,7 @@
    "plan": "SaaS · activated",
    "onboarded": "2026-01-27",
    "website": "https://culpepperlawgroup.com",
-   "totalContacts": 3057,
+   "totalContacts": null,
    "leads": {
     "d30": 122,
     "prev30": 156,
@@ -19,31 +19,31 @@
      3,
      3,
      0,
-     2,
      1,
-     5,
-     10,
-     5,
-     2,
-     2,
      1,
+     6,
+     6,
+     5,
+     1,
+     2,
+     0,
      4,
      0,
      1,
+     0,
      1,
+     0,
+     0,
      1,
-     0,
-     0,
-     3,
-     4,
-     3,
-     0,
      5,
-     0,
-     0,
-     3,
      1,
-     9,
+     1,
+     4,
+     0,
+     0,
+     2,
+     2,
+     6,
      5,
      2
     ],
@@ -51,15 +51,15 @@
     "sources": [
      [
       "Manual entry",
-      58
+      50
      ],
      [
       "Facebook / Meta Ads",
-      37
+      44
      ],
      [
       "Form",
-      3
+      4
      ],
      [
       "Unattributed",
@@ -73,7 +73,7 @@
     "openValueSample": 554500,
     "openSampleSize": 100,
     "won30": 39,
-    "lost30": 60,
+    "lost30": 0,
     "wonValue": 596998,
     "avgDaysToClose": 24,
     "stalled": 47,
@@ -115,23 +115,23 @@
     "emailValidity": 100,
     "emailCoverage": 81,
     "invalidEmails": 0,
-    "missingEmails": 581,
+    "missingEmails": null,
     "bounceRate": null,
     "smsOptOutRate": null,
     "a2p": null,
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 141,
+    "smsSent": 148,
     "smsFailed": 5,
-    "smsFailRate": 3.5,
+    "smsFailRate": 3.4,
     "callTotal": 10,
     "callFailed": 0,
     "callAnswered": 10,
     "callFailRate": 0,
     "avgCallSec": 115,
     "shortCalls": 1,
-    "emailSent": 380,
+    "emailSent": 393,
     "conversationsSampled": 100,
     "error": null
    },

@@ -1,5 +1,5 @@
 {
- "synced": "2026-09-10T15:53:11.230Z",
+ "synced": "2026-09-10T20:27:40.428Z",
  "source": "api",
  "clients": [
   {
@@ -11,41 +11,41 @@
    "plan": "SaaS · activated",
    "onboarded": "2026-01-27",
    "website": "https://culpepperlawgroup.com",
-   "totalContacts": 3080,
+   "totalContacts": 3085,
    "leads": {
-    "d30": 136,
+    "d30": 141,
     "prev30": 146,
     "trend": [
-     6,
-     11,
-     3,
-     2,
-     2,
-     1,
-     3,
-     1,
-     0,
-     2,
-     0,
-     0,
+     8,
+     7,
+     4,
      2,
      1,
-     5,
-     2,
-     2,
      3,
+     1,
+     1,
      0,
      2,
+     0,
+     0,
+     3,
+     2,
+     4,
      1,
      4,
-     5,
-     5,
+     1,
+     0,
+     3,
+     1,
+     4,
+     8,
+     1,
      1,
      3,
      4,
-     5,
-     4,
-     3
+     8,
+     3,
+     5
     ],
     "trendPartial": true,
     "sources": [
@@ -69,25 +69,25 @@
     "topCampaign": null
    },
    "pipeline": {
-    "open": 1252,
-    "openValueSample": 557500,
+    "open": 1256,
+    "openValueSample": 548500,
     "openSampleSize": 100,
     "won30": 41,
     "lost30": 60,
     "wonValue": 614998,
     "avgDaysToClose": 23,
-    "stalled": 40,
+    "stalled": 36,
     "stalledSampled": true,
-    "noValueCount": 35,
+    "noValueCount": 36,
     "noValueSample": 100,
     "stages": [
      [
       "Personal Injury",
-      52
+      51
      ],
      [
       "Family Law",
-      30
+      31
      ],
      [
       "Real Estate",
@@ -101,7 +101,7 @@
    },
    "speed": {
     "avgFirstResponseMin": 200,
-    "pctUnder5": 44
+    "pctUnder5": 50
    },
    "appts": {
     "booked30": null,
@@ -118,16 +118,16 @@
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 150,
-    "smsFailed": 6,
-    "smsFailRate": 4,
-    "callTotal": 16,
+    "smsSent": 143,
+    "smsFailed": 7,
+    "smsFailRate": 4.9,
+    "callTotal": 15,
     "callFailed": 0,
-    "callAnswered": 16,
+    "callAnswered": 15,
     "callFailRate": 0,
-    "avgCallSec": 102,
+    "avgCallSec": 90,
     "shortCalls": 3,
-    "emailSent": 381,
+    "emailSent": 367,
     "conversationsSampled": 100,
     "error": null
    },

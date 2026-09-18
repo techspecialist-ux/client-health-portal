@@ -1,5 +1,5 @@
 {
- "synced": "2026-09-17T20:58:36.981Z",
+ "synced": "2026-09-18T03:21:38.110Z",
  "source": "api",
  "clients": [
   {
@@ -11,51 +11,51 @@
    "plan": "SaaS · activated",
    "onboarded": "2026-01-27",
    "website": "https://culpepperlawgroup.com",
-   "totalContacts": 3117,
+   "totalContacts": 3119,
    "leads": {
-    "d30": 137,
-    "prev30": 147,
+    "d30": 136,
+    "prev30": 149,
     "trend": [
      1,
-     0,
-     2,
-     0,
-     0,
-     3,
-     3,
-     3,
      1,
-     4,
      1,
      0,
-     3,
-     1,
-     4,
-     8,
-     2,
      0,
-     2,
+     3,
      4,
-     8,
-     2,
+     3,
+     0,
      5,
      0,
+     0,
      3,
-     2,
-     4,
      1,
      7,
+     5,
+     2,
+     0,
+     6,
+     0,
+     8,
+     3,
+     4,
+     2,
+     1,
+     3,
+     3,
+     3,
+     6,
      3
     ],
     "trendPartial": true,
     "sources": [
      [
       "Manual entry",
-      58
+      57
      ],
      [
       "Facebook / Meta Ads",
-      38
+      39
      ],
      [
       "Form",
@@ -69,21 +69,21 @@
     "topCampaign": null
    },
    "pipeline": {
-    "open": 1270,
-    "openValueSample": 564000,
+    "open": 1271,
+    "openValueSample": 570000,
     "openSampleSize": 100,
     "won30": 44,
     "lost30": 61,
     "wonValue": 617998,
     "avgDaysToClose": 21,
-    "stalled": 40,
+    "stalled": 39,
     "stalledSampled": true,
     "noValueCount": 35,
     "noValueSample": 100,
     "stages": [
      [
       "Personal Injury",
-      53
+      54
      ],
      [
       "Family Law",
@@ -91,7 +91,7 @@
      ],
      [
       "Real Estate",
-      10
+      9
      ],
      [
       "Bankruptcy Pipeline",
@@ -101,7 +101,7 @@
    },
    "speed": {
     "avgFirstResponseMin": 50,
-    "pctUnder5": 20
+    "pctUnder5": 18
    },
    "appts": {
     "booked30": null,
@@ -111,23 +111,23 @@
     "emailValidity": 100,
     "emailCoverage": 81,
     "invalidEmails": 0,
-    "missingEmails": 592,
+    "missingEmails": 593,
     "bounceRate": null,
     "smsOptOutRate": null,
     "a2p": null,
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 171,
+    "smsSent": 164,
     "smsFailed": 5,
-    "smsFailRate": 2.9,
-    "callTotal": 26,
+    "smsFailRate": 3,
+    "callTotal": 30,
     "callFailed": 1,
-    "callAnswered": 25,
-    "callFailRate": 3.8,
-    "avgCallSec": 127,
-    "shortCalls": 2,
-    "emailSent": 396,
+    "callAnswered": 29,
+    "callFailRate": 3.3,
+    "avgCallSec": 115,
+    "shortCalls": 3,
+    "emailSent": 395,
     "conversationsSampled": 100,
     "error": null
    },

@@ -1,5 +1,5 @@
 {
- "synced": "2026-09-24T11:10:29.374Z",
+ "synced": "2026-09-24T16:34:10.845Z",
  "source": "api",
  "clients": [
   {
@@ -13,39 +13,39 @@
    "website": "https://culpepperlawgroup.com",
    "totalContacts": 3147,
    "leads": {
-    "d30": 155,
+    "d30": 153,
     "prev30": 126,
     "trend": [
      5,
+     1,
+     2,
+     3,
+     0,
      2,
      1,
      4,
-     0,
-     1,
-     2,
-     2,
-     6,
-     5,
-     2,
-     2,
-     4,
-     0,
-     8,
-     3,
-     4,
-     3,
-     0,
-     3,
-     3,
-     3,
      6,
      4,
-     2,
      1,
+     2,
+     4,
+     6,
+     3,
+     4,
+     2,
+     3,
      0,
      3,
      3,
-     4
+     4,
+     4,
+     3,
+     2,
+     0,
+     1,
+     3,
+     3,
+     2
     ],
     "trendPartial": true,
     "sources": [
@@ -55,7 +55,7 @@
      ],
      [
       "Facebook / Meta Ads",
-      38
+      36
      ],
      [
       "Unattributed",
@@ -63,39 +63,39 @@
      ],
      [
       "Form",
-      1
+      2
      ]
     ],
     "topCampaign": null
    },
    "pipeline": {
-    "open": 1278,
-    "openValueSample": 553000,
+    "open": 1274,
+    "openValueSample": 542000,
     "openSampleSize": 100,
     "won30": 48,
     "lost30": 64,
     "wonValue": 637748,
     "avgDaysToClose": 19,
-    "stalled": 34,
+    "stalled": 38,
     "stalledSampled": true,
     "noValueCount": 38,
     "noValueSample": 100,
     "stages": [
      [
       "Personal Injury",
-      55
+      52
      ],
      [
       "Family Law",
-      32
+      33
      ],
      [
       "Real Estate",
-      9
+      10
      ],
      [
       "Bankruptcy Pipeline",
-      4
+      5
      ]
     ]
    },
@@ -118,16 +118,16 @@
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 168,
+    "smsSent": 169,
     "smsFailed": 10,
-    "smsFailRate": 6,
+    "smsFailRate": 5.9,
     "callTotal": 32,
     "callFailed": 2,
     "callAnswered": 30,
     "callFailRate": 6.3,
     "avgCallSec": 118,
     "shortCalls": 4,
-    "emailSent": 404,
+    "emailSent": 405,
     "conversationsSampled": 100,
     "error": null
    },

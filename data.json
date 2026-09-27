@@ -1,5 +1,5 @@
 {
- "synced": "2026-09-27T16:27:57.739Z",
+ "synced": "2026-09-27T20:56:00.003Z",
  "source": "api",
  "clients": [
   {
@@ -11,41 +11,41 @@
    "plan": "SaaS · activated",
    "onboarded": "2026-01-27",
    "website": "https://culpepperlawgroup.com",
-   "totalContacts": 3156,
+   "totalContacts": 3158,
    "leads": {
-    "d30": 149,
+    "d30": 151,
     "prev30": 126,
     "trend": [
-     3,
-     0,
      1,
-     1,
-     4,
-     6,
-     4,
-     1,
-     2,
-     4,
-     6,
-     3,
-     4,
-     2,
-     3,
      0,
      2,
-     3,
+     1,
      4,
-     3,
-     2,
+     8,
      2,
      0,
-     1,
-     3,
-     3,
      2,
      4,
+     8,
      2,
-     2
+     5,
+     0,
+     3,
+     2,
+     2,
+     1,
+     5,
+     2,
+     4,
+     0,
+     0,
+     1,
+     4,
+     3,
+     2,
+     3,
+     2,
+     4
     ],
     "trendPartial": true,
     "sources": [
@@ -63,31 +63,31 @@
      ],
      [
       "Form",
-      2
+      1
      ]
     ],
     "topCampaign": null
    },
    "pipeline": {
-    "open": 1274,
-    "openValueSample": 551000,
+    "open": 1276,
+    "openValueSample": 550000,
     "openSampleSize": 100,
     "won30": 50,
     "lost30": 66,
     "wonValue": 646748,
     "avgDaysToClose": 19,
-    "stalled": 45,
+    "stalled": 44,
     "stalledSampled": true,
     "noValueCount": 37,
     "noValueSample": 100,
     "stages": [
      [
       "Personal Injury",
-      53
+      54
      ],
      [
       "Family Law",
-      31
+      30
      ],
      [
       "Real Estate",
@@ -118,16 +118,16 @@
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 177,
+    "smsSent": 182,
     "smsFailed": 12,
-    "smsFailRate": 6.8,
-    "callTotal": 33,
+    "smsFailRate": 6.6,
+    "callTotal": 34,
     "callFailed": 2,
-    "callAnswered": 31,
-    "callFailRate": 6.1,
-    "avgCallSec": 125,
+    "callAnswered": 32,
+    "callFailRate": 5.9,
+    "avgCallSec": 126,
     "shortCalls": 4,
-    "emailSent": 410,
+    "emailSent": 406,
     "conversationsSampled": 100,
     "error": null
    },

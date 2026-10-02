@@ -1,5 +1,5 @@
 {
- "synced": "2026-10-02T04:14:12.684Z",
+ "synced": "2026-10-02T11:56:50.268Z",
  "source": "api",
  "clients": [
   {
@@ -16,23 +16,23 @@
     "d30": 159,
     "prev30": 132,
     "trend": [
-     7,
+     6,
      5,
      2,
-     0,
-     6,
+     2,
+     4,
      0,
      8,
      3,
      4,
+     3,
+     0,
      2,
-     1,
-     2,
      2,
      3,
+     4,
      3,
-     3,
-     3,
+     2,
      0,
      0,
      3,
@@ -44,8 +44,8 @@
      4,
      3,
      2,
-     2,
-     3
+     3,
+     2
     ],
     "trendPartial": true,
     "sources": [
@@ -101,7 +101,7 @@
    },
    "speed": {
     "avgFirstResponseMin": 60,
-    "pctUnder5": 9
+    "pctUnder5": 8
    },
    "appts": {
     "booked30": null,
@@ -118,16 +118,16 @@
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 180,
+    "smsSent": 181,
     "smsFailed": 15,
     "smsFailRate": 8.3,
-    "callTotal": 26,
+    "callTotal": 29,
     "callFailed": 2,
-    "callAnswered": 24,
-    "callFailRate": 7.7,
-    "avgCallSec": 131,
+    "callAnswered": 27,
+    "callFailRate": 6.9,
+    "avgCallSec": 138,
     "shortCalls": 5,
-    "emailSent": 395,
+    "emailSent": 396,
     "conversationsSampled": 100,
     "error": null
    },

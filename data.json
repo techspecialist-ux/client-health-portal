@@ -1,5 +1,5 @@
 {
- "synced": "2026-10-03T20:38:00.322Z",
+ "synced": "2026-10-04T04:29:21.461Z",
  "source": "api",
  "clients": [
   {
@@ -11,51 +11,51 @@
    "plan": "SaaS · activated",
    "onboarded": "2026-01-27",
    "website": "https://culpepperlawgroup.com",
-   "totalContacts": 3184,
+   "totalContacts": 3185,
    "leads": {
-    "d30": 155,
-    "prev30": 134,
+    "d30": 150,
+    "prev30": 125,
     "trend": [
-     1,
-     1,
      2,
-     4,
+     0,
+     6,
+     0,
      8,
-     2,
-     5,
-     0,
      3,
-     2,
+     4,
      2,
      1,
-     5,
      2,
+     2,
+     3,
      4,
+     2,
+     3,
      0,
      0,
+     3,
+     3,
+     3,
+     3,
+     3,
      1,
      4,
-     2,
-     3,
-     3,
-     2,
-     4,
      3,
      2,
      3,
-     3,
-     4,
+     2,
+     5,
      2
     ],
     "trendPartial": true,
     "sources": [
      [
       "Manual entry",
-      60
+      59
      ],
      [
       "Facebook / Meta Ads",
-      37
+      38
      ],
      [
       "Unattributed",
@@ -69,25 +69,25 @@
     "topCampaign": null
    },
    "pipeline": {
-    "open": 1290,
-    "openValueSample": 519000,
+    "open": 1291,
+    "openValueSample": 518000,
     "openSampleSize": 100,
     "won30": 53,
     "lost30": 66,
     "wonValue": 660748,
     "avgDaysToClose": 20,
-    "stalled": 39,
+    "stalled": 38,
     "stalledSampled": true,
     "noValueCount": 42,
     "noValueSample": 100,
     "stages": [
      [
       "Personal Injury",
-      55
+      56
      ],
      [
       "Family Law",
-      30
+      29
      ],
      [
       "Real Estate",
@@ -118,16 +118,16 @@
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 174,
-    "smsFailed": 17,
-    "smsFailRate": 9.8,
+    "smsSent": 181,
+    "smsFailed": 19,
+    "smsFailRate": 10.5,
     "callTotal": 20,
     "callFailed": 2,
     "callAnswered": 18,
     "callFailRate": 10,
     "avgCallSec": 112,
     "shortCalls": 5,
-    "emailSent": 402,
+    "emailSent": 411,
     "conversationsSampled": 100,
     "error": null
    },

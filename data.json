@@ -1,5 +1,5 @@
 {
- "synced": "2026-10-11T12:10:01.019Z",
+ "synced": "2026-10-11T21:31:51.459Z",
  "source": "api",
  "clients": [
   {
@@ -11,47 +11,47 @@
    "plan": "SaaS · activated",
    "onboarded": "2026-01-27",
    "website": "https://culpepperlawgroup.com",
-   "totalContacts": 3217,
+   "totalContacts": 3219,
    "leads": {
-    "d30": 152,
+    "d30": 154,
     "prev30": 132,
     "trend": [
      3,
+     2,
+     2,
+     2,
+     4,
+     2,
+     4,
      0,
+     0,
+     3,
+     3,
      2,
      2,
      3,
+     2,
      4,
      3,
      2,
-     0,
-     0,
-     3,
-     3,
-     3,
-     3,
-     3,
+     2,
+     2,
+     4,
      1,
-     4,
-     3,
-     2,
-     1,
-     2,
-     5,
      0,
-     0,
-     13,
-     3,
+     10,
+     6,
      4,
      0,
      4,
-     1
+     0,
+     3
     ],
     "trendPartial": true,
     "sources": [
      [
       "Manual entry",
-      60
+      59
      ],
      [
       "Facebook / Meta Ads",
@@ -73,25 +73,25 @@
     "topCampaign": null
    },
    "pipeline": {
-    "open": 1310,
-    "openValueSample": 490500,
+    "open": 1312,
+    "openValueSample": 508500,
     "openSampleSize": 100,
     "won30": 55,
     "lost30": 66,
     "wonValue": 660748,
     "avgDaysToClose": 19,
-    "stalled": 39,
+    "stalled": 37,
     "stalledSampled": true,
-    "noValueCount": 45,
+    "noValueCount": 43,
     "noValueSample": 100,
     "stages": [
      [
       "Personal Injury",
-      55
+      56
      ],
      [
       "Family Law",
-      30
+      29
      ],
      [
       "Real Estate",
@@ -104,8 +104,8 @@
     ]
    },
    "speed": {
-    "avgFirstResponseMin": 60,
-    "pctUnder5": 23
+    "avgFirstResponseMin": 116,
+    "pctUnder5": 21
    },
    "appts": {
     "booked30": null,
@@ -115,23 +115,23 @@
     "emailValidity": 100,
     "emailCoverage": 81,
     "invalidEmails": 0,
-    "missingEmails": 611,
+    "missingEmails": 612,
     "bounceRate": null,
     "smsOptOutRate": null,
     "a2p": null,
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 209,
-    "smsFailed": 14,
-    "smsFailRate": 6.7,
-    "callTotal": 17,
+    "smsSent": 210,
+    "smsFailed": 17,
+    "smsFailRate": 8.1,
+    "callTotal": 15,
     "callFailed": 3,
-    "callAnswered": 14,
-    "callFailRate": 17.6,
-    "avgCallSec": 184,
-    "shortCalls": 4,
-    "emailSent": 435,
+    "callAnswered": 12,
+    "callFailRate": 20,
+    "avgCallSec": 200,
+    "shortCalls": 3,
+    "emailSent": 443,
     "conversationsSampled": 100,
     "error": null
    },

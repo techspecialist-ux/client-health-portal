@@ -1,5 +1,5 @@
 {
- "synced": "2026-10-11T04:12:48.127Z",
+ "synced": "2026-10-11T12:10:01.019Z",
  "source": "api",
  "clients": [
   {
@@ -11,19 +11,19 @@
    "plan": "SaaS · activated",
    "onboarded": "2026-01-27",
    "website": "https://culpepperlawgroup.com",
-   "totalContacts": 3216,
+   "totalContacts": 3217,
    "leads": {
-    "d30": 151,
+    "d30": 152,
     "prev30": 132,
     "trend": [
+     3,
+     0,
      2,
-     1,
-     2,
      2,
      3,
+     4,
      3,
-     3,
-     3,
+     2,
      0,
      0,
      3,
@@ -45,7 +45,7 @@
      4,
      0,
      4,
-     0
+     1
     ],
     "trendPartial": true,
     "sources": [
@@ -64,30 +64,34 @@
      [
       "Form",
       1
+     ],
+     [
+      "Other",
+      0
      ]
     ],
     "topCampaign": null
    },
    "pipeline": {
-    "open": 1309,
-    "openValueSample": 481500,
+    "open": 1310,
+    "openValueSample": 490500,
     "openSampleSize": 100,
     "won30": 55,
     "lost30": 66,
     "wonValue": 660748,
     "avgDaysToClose": 19,
-    "stalled": 40,
+    "stalled": 39,
     "stalledSampled": true,
-    "noValueCount": 46,
+    "noValueCount": 45,
     "noValueSample": 100,
     "stages": [
      [
       "Personal Injury",
-      54
+      55
      ],
      [
       "Family Law",
-      31
+      30
      ],
      [
       "Real Estate",
@@ -101,7 +105,7 @@
    },
    "speed": {
     "avgFirstResponseMin": 60,
-    "pctUnder5": 27
+    "pctUnder5": 23
    },
    "appts": {
     "booked30": null,
@@ -118,15 +122,15 @@
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 203,
-    "smsFailed": 13,
-    "smsFailRate": 6.4,
-    "callTotal": 14,
+    "smsSent": 209,
+    "smsFailed": 14,
+    "smsFailRate": 6.7,
+    "callTotal": 17,
     "callFailed": 3,
-    "callAnswered": 11,
-    "callFailRate": 21.4,
-    "avgCallSec": 210,
-    "shortCalls": 2,
+    "callAnswered": 14,
+    "callFailRate": 17.6,
+    "avgCallSec": 184,
+    "shortCalls": 4,
     "emailSent": 435,
     "conversationsSampled": 100,
     "error": null

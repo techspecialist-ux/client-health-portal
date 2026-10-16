@@ -1,5 +1,5 @@
 {
- "synced": "2026-10-16T03:17:37.608Z",
+ "synced": "2026-10-16T10:46:47.143Z",
  "source": "api",
  "clients": [
   {
@@ -18,7 +18,7 @@
     "trend": [
      4,
      3,
-     3,
+     2,
      0,
      0,
      3,
@@ -118,16 +118,16 @@
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 196,
+    "smsSent": 195,
     "smsFailed": 12,
-    "smsFailRate": 6.1,
-    "callTotal": 15,
+    "smsFailRate": 6.2,
+    "callTotal": 13,
     "callFailed": 2,
-    "callAnswered": 13,
-    "callFailRate": 13.3,
-    "avgCallSec": 194,
+    "callAnswered": 11,
+    "callFailRate": 15.4,
+    "avgCallSec": 195,
     "shortCalls": 3,
-    "emailSent": 445,
+    "emailSent": 444,
     "conversationsSampled": 100,
     "error": null
    },

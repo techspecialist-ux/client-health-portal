@@ -1,5 +1,5 @@
 {
- "synced": "2026-10-17T03:08:30.582Z",
+ "synced": "2026-10-17T10:11:49.656Z",
  "source": "api",
  "clients": [
   {
@@ -16,7 +16,7 @@
     "d30": 139,
     "prev30": 133,
     "trend": [
-     3,
+     2,
      3,
      0,
      0,
@@ -76,7 +76,7 @@
     "lost30": 66,
     "wonValue": 660748,
     "avgDaysToClose": 18,
-    "stalled": 55,
+    "stalled": 56,
     "stalledSampled": true,
     "noValueCount": 51,
     "noValueSample": 100,

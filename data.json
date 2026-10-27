@@ -1,5 +1,5 @@
 {
- "synced": "2026-10-27T03:51:05.656Z",
+ "synced": "2026-10-27T11:39:18.700Z",
  "source": "api",
  "clients": [
   {
@@ -11,7 +11,7 @@
    "plan": "SaaS · activated",
    "onboarded": "2026-01-27",
    "website": "https://culpepperlawgroup.com",
-   "totalContacts": 3252,
+   "totalContacts": 3253,
    "leads": {
     "d30": 105,
     "prev30": 152,
@@ -105,7 +105,7 @@
    },
    "speed": {
     "avgFirstResponseMin": 116,
-    "pctUnder5": 23
+    "pctUnder5": 25
    },
    "appts": {
     "booked30": null,
@@ -113,25 +113,25 @@
    },
    "deliver": {
     "emailValidity": 100,
-    "emailCoverage": 77,
+    "emailCoverage": 76,
     "invalidEmails": 0,
-    "missingEmails": 748,
+    "missingEmails": 781,
     "bounceRate": null,
     "smsOptOutRate": null,
     "a2p": null,
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 191,
-    "smsFailed": 7,
-    "smsFailRate": 3.7,
-    "callTotal": 11,
+    "smsSent": 192,
+    "smsFailed": 12,
+    "smsFailRate": 6.3,
+    "callTotal": 9,
     "callFailed": 2,
-    "callAnswered": 9,
-    "callFailRate": 18.2,
-    "avgCallSec": 237,
-    "shortCalls": 2,
-    "emailSent": 468,
+    "callAnswered": 7,
+    "callFailRate": 22.2,
+    "avgCallSec": 272,
+    "shortCalls": 1,
+    "emailSent": 470,
     "conversationsSampled": 100,
     "error": null
    },

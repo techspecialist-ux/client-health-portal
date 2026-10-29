@@ -1,5 +1,5 @@
 {
- "synced": "2026-10-29T12:21:18.935Z",
+ "synced": "2026-10-29T22:28:10.429Z",
  "source": "api",
  "clients": [
   {
@@ -11,16 +11,15 @@
    "plan": "SaaS · activated",
    "onboarded": "2026-01-27",
    "website": "https://culpepperlawgroup.com",
-   "totalContacts": 3257,
+   "totalContacts": 3258,
    "leads": {
-    "d30": 96,
+    "d30": 98,
     "prev30": 157,
     "trend": [
      2,
-     1,
      2,
-     5,
-     0,
+     4,
+     1,
      0,
      4,
      2,
@@ -45,13 +44,14 @@
      0,
      4,
      3,
+     2,
      2
     ],
     "trendPartial": true,
     "sources": [
      [
       "Manual entry",
-      65
+      66
      ],
      [
       "Facebook / Meta Ads",
@@ -70,10 +70,10 @@
    },
    "pipeline": {
     "open": 1313,
-    "openValueSample": 399500,
+    "openValueSample": 393500,
     "openSampleSize": 100,
     "won30": 63,
-    "lost30": 68,
+    "lost30": 69,
     "wonValue": 660748,
     "avgDaysToClose": 17,
     "stalled": 66,
@@ -83,11 +83,11 @@
     "stages": [
      [
       "Personal Injury",
-      43
+      42
      ],
      [
       "Family Law",
-      37
+      36
      ],
      [
       "Real Estate",
@@ -95,7 +95,7 @@
      ],
      [
       "Bankruptcy Pipeline",
-      6
+      8
      ],
      [
       "Unqualified Leads Pipeline",
@@ -104,8 +104,8 @@
     ]
    },
    "speed": {
-    "avgFirstResponseMin": 116,
-    "pctUnder5": 25
+    "avgFirstResponseMin": 60,
+    "pctUnder5": 20
    },
    "appts": {
     "booked30": null,
@@ -122,16 +122,16 @@
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 188,
-    "smsFailed": 7,
-    "smsFailRate": 3.7,
-    "callTotal": 8,
+    "smsSent": 186,
+    "smsFailed": 6,
+    "smsFailRate": 3.2,
+    "callTotal": 11,
     "callFailed": 2,
-    "callAnswered": 6,
-    "callFailRate": 25,
-    "avgCallSec": 269,
-    "shortCalls": 1,
-    "emailSent": 470,
+    "callAnswered": 9,
+    "callFailRate": 18.2,
+    "avgCallSec": 228,
+    "shortCalls": 2,
+    "emailSent": 477,
     "conversationsSampled": 100,
     "error": null
    },

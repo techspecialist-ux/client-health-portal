@@ -1,5 +1,5 @@
 {
- "synced": "2026-11-01T12:43:36.755Z",
+ "synced": "2026-11-01T21:43:53.683Z",
  "source": "api",
  "clients": [
   {
@@ -11,13 +11,12 @@
    "plan": "SaaS · activated",
    "onboarded": "2026-01-27",
    "website": "https://culpepperlawgroup.com",
-   "totalContacts": 3275,
+   "totalContacts": 3277,
    "leads": {
-    "d30": 99,
+    "d30": 101,
     "prev30": 165,
     "trend": [
-     5,
-     0,
+     1,
      0,
      4,
      2,
@@ -44,18 +43,19 @@
      3,
      2,
      2,
-     11,
-     2
+     10,
+     2,
+     3
     ],
     "trendPartial": true,
     "sources": [
      [
       "Manual entry",
-      67
+      66
      ],
      [
       "Facebook / Meta Ads",
-      29
+      30
      ],
      [
       "Form",
@@ -69,25 +69,25 @@
     "topCampaign": null
    },
    "pipeline": {
-    "open": 1325,
-    "openValueSample": 375500,
+    "open": 1327,
+    "openValueSample": 393500,
     "openSampleSize": 100,
     "won30": 64,
     "lost30": 69,
     "wonValue": 660748,
     "avgDaysToClose": 17,
-    "stalled": 56,
+    "stalled": 54,
     "stalledSampled": true,
-    "noValueCount": 55,
+    "noValueCount": 53,
     "noValueSample": 100,
     "stages": [
      [
-      "Family Law",
-      41
+      "Personal Injury",
+      42
      ],
      [
-      "Personal Injury",
-      40
+      "Family Law",
+      39
      ],
      [
       "Real Estate",
@@ -113,16 +113,16 @@
    },
    "deliver": {
     "emailValidity": 100,
-    "emailCoverage": 75,
+    "emailCoverage": 76,
     "invalidEmails": 0,
-    "missingEmails": 819,
+    "missingEmails": 786,
     "bounceRate": null,
     "smsOptOutRate": null,
     "a2p": null,
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 171,
+    "smsSent": 170,
     "smsFailed": 1,
     "smsFailRate": 0.6,
     "callTotal": 10,
@@ -131,7 +131,7 @@
     "callFailRate": 20,
     "avgCallSec": 256,
     "shortCalls": 1,
-    "emailSent": 455,
+    "emailSent": 457,
     "conversationsSampled": 100,
     "error": null
    },

@@ -1,5 +1,5 @@
 {
- "synced": "2026-11-05T05:18:26.807Z",
+ "synced": "2026-11-05T14:02:23.580Z",
  "source": "api",
  "clients": [
   {
@@ -122,7 +122,7 @@
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 96,
+    "smsSent": 98,
     "smsFailed": 3,
     "smsFailRate": 3.1,
     "callTotal": 6,
@@ -131,7 +131,7 @@
     "callFailRate": 33.3,
     "avgCallSec": 271,
     "shortCalls": 0,
-    "emailSent": 358,
+    "emailSent": 364,
     "conversationsSampled": 100,
     "error": null
    },

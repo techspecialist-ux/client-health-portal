@@ -1,5 +1,5 @@
 {
- "synced": "2026-11-05T23:17:19.291Z",
+ "synced": "2026-11-06T05:17:56.913Z",
  "source": "api",
  "clients": [
   {
@@ -13,8 +13,8 @@
    "website": "https://culpepperlawgroup.com",
    "totalContacts": 3380,
    "leads": {
-    "d30": 129,
-    "prev30": 159,
+    "d30": 124,
+    "prev30": 161,
     "trend": [
      2,
      0,
@@ -39,11 +39,11 @@
      3,
      2,
      2,
-     10,
-     1,
-     3,
+     11,
+     0,
      4,
-     3,
+     4,
+     2,
      1,
      2
     ],
@@ -104,8 +104,8 @@
     ]
    },
    "speed": {
-    "avgFirstResponseMin": 2,
-    "pctUnder5": 60
+    "avgFirstResponseMin": 6,
+    "pctUnder5": 50
    },
    "appts": {
     "booked30": null,
@@ -122,16 +122,16 @@
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 82,
-    "smsFailed": 3,
-    "smsFailRate": 3.7,
+    "smsSent": 74,
+    "smsFailed": 4,
+    "smsFailRate": 5.4,
     "callTotal": 5,
     "callFailed": 2,
     "callAnswered": 3,
     "callFailRate": 40,
     "avgCallSec": 246,
     "shortCalls": 0,
-    "emailSent": 336,
+    "emailSent": 326,
     "conversationsSampled": 100,
     "error": null
    },

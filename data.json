@@ -1,5 +1,5 @@
 {
- "synced": "2026-11-10T01:12:45.483Z",
+ "synced": "2026-11-10T14:23:56.988Z",
  "source": "api",
  "clients": [
   {
@@ -11,9 +11,9 @@
    "plan": "SaaS · activated",
    "onboarded": "2026-01-27",
    "website": "https://culpepperlawgroup.com",
-   "totalContacts": 3415,
+   "totalContacts": 3416,
    "leads": {
-    "d30": 125,
+    "d30": 126,
     "prev30": 149,
     "trend": [
      1,
@@ -35,17 +35,17 @@
      3,
      2,
      2,
-     10,
-     1,
-     3,
-     5,
+     11,
+     0,
+     4,
+     4,
      2,
      0,
      2,
      4,
      1,
      0,
-     1
+     2
     ],
     "trendPartial": true,
     "sources": [
@@ -69,14 +69,14 @@
     "topCampaign": null
    },
    "pipeline": {
-    "open": 1340,
-    "openValueSample": 365500,
+    "open": 1341,
+    "openValueSample": 359500,
     "openSampleSize": 100,
     "won30": 64,
     "lost30": 70,
     "wonValue": 660748,
     "avgDaysToClose": 17,
-    "stalled": 50,
+    "stalled": 49,
     "stalledSampled": true,
     "noValueCount": 56,
     "noValueSample": 100,
@@ -87,7 +87,7 @@
      ],
      [
       "Personal Injury",
-      39
+      38
      ],
      [
       "Real Estate",
@@ -95,7 +95,7 @@
      ],
      [
       "Bankruptcy Pipeline",
-      7
+      8
      ],
      [
       "Unqualified Leads Pipeline",
@@ -122,16 +122,16 @@
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 66,
+    "smsSent": 62,
     "smsFailed": 5,
-    "smsFailRate": 7.6,
+    "smsFailRate": 8.1,
     "callTotal": 5,
     "callFailed": 2,
     "callAnswered": 3,
     "callFailRate": 40,
     "avgCallSec": 246,
     "shortCalls": 0,
-    "emailSent": 300,
+    "emailSent": 299,
     "conversationsSampled": 100,
     "error": null
    },

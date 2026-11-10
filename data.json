@@ -1,5 +1,5 @@
 {
- "synced": "2026-11-10T14:23:56.988Z",
+ "synced": "2026-11-10T22:52:51.698Z",
  "source": "api",
  "clients": [
   {
@@ -11,12 +11,11 @@
    "plan": "SaaS · activated",
    "onboarded": "2026-01-27",
    "website": "https://culpepperlawgroup.com",
-   "totalContacts": 3416,
+   "totalContacts": 3420,
    "leads": {
-    "d30": 126,
+    "d30": 128,
     "prev30": 149,
     "trend": [
-     1,
      3,
      4,
      2,
@@ -35,17 +34,18 @@
      3,
      2,
      2,
-     11,
-     0,
+     10,
+     1,
+     3,
      4,
-     4,
-     2,
+     3,
      0,
      2,
      4,
      1,
      0,
-     2
+     1,
+     3
     ],
     "trendPartial": true,
     "sources": [
@@ -69,21 +69,21 @@
     "topCampaign": null
    },
    "pipeline": {
-    "open": 1341,
+    "open": 1343,
     "openValueSample": 359500,
     "openSampleSize": 100,
     "won30": 64,
     "lost30": 70,
     "wonValue": 660748,
     "avgDaysToClose": 17,
-    "stalled": 49,
+    "stalled": 48,
     "stalledSampled": true,
     "noValueCount": 56,
     "noValueSample": 100,
     "stages": [
      [
       "Family Law",
-      41
+      42
      ],
      [
       "Personal Injury",
@@ -91,7 +91,7 @@
      ],
      [
       "Real Estate",
-      10
+      9
      ],
      [
       "Bankruptcy Pipeline",
@@ -113,25 +113,25 @@
    },
    "deliver": {
     "emailValidity": 100,
-    "emailCoverage": 95,
+    "emailCoverage": 93,
     "invalidEmails": 0,
-    "missingEmails": 171,
+    "missingEmails": 239,
     "bounceRate": null,
     "smsOptOutRate": null,
     "a2p": null,
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 62,
+    "smsSent": 65,
     "smsFailed": 5,
-    "smsFailRate": 8.1,
-    "callTotal": 5,
+    "smsFailRate": 7.7,
+    "callTotal": 4,
     "callFailed": 2,
-    "callAnswered": 3,
-    "callFailRate": 40,
-    "avgCallSec": 246,
+    "callAnswered": 2,
+    "callFailRate": 50,
+    "avgCallSec": 169,
     "shortCalls": 0,
-    "emailSent": 299,
+    "emailSent": 304,
     "conversationsSampled": 100,
     "error": null
    },

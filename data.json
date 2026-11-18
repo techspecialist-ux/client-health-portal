@@ -1,5 +1,5 @@
 {
- "synced": "2026-11-17T15:32:11.194Z",
+ "synced": "2026-11-18T00:34:36.110Z",
  "source": "api",
  "clients": [
   {
@@ -11,21 +11,20 @@
    "plan": "SaaS · activated",
    "onboarded": "2026-01-27",
    "website": "https://culpepperlawgroup.com",
-   "totalContacts": 3428,
+   "totalContacts": 3430,
    "leads": {
-    "d30": 164,
-    "prev30": 135,
+    "d30": 166,
+    "prev30": 129,
     "trend": [
+     1,
+     1,
+     2,
      0,
      2,
-     1,
-     1,
-     1,
-     1,
      0,
      0,
-     5,
-     2,
+     4,
+     3,
      1,
      1,
      9,
@@ -38,14 +37,15 @@
      2,
      0,
      0,
-     2,
-     2,
+     1,
+     3,
      0,
      3,
      1,
+     0,
      1,
      0,
-     0
+     2
     ],
     "trendPartial": true,
     "sources": [
@@ -69,16 +69,16 @@
     "topCampaign": null
    },
    "pipeline": {
-    "open": 1336,
-    "openValueSample": 329000,
+    "open": 1338,
+    "openValueSample": 319000,
     "openSampleSize": 100,
     "won30": 64,
     "lost30": 71,
     "wonValue": 660748,
     "avgDaysToClose": 17,
-    "stalled": 64,
+    "stalled": 62,
     "stalledSampled": true,
-    "noValueCount": 61,
+    "noValueCount": 62,
     "noValueSample": 100,
     "stages": [
      [
@@ -105,7 +105,7 @@
    },
    "speed": {
     "avgFirstResponseMin": 33,
-    "pctUnder5": 50
+    "pctUnder5": 33
    },
    "appts": {
     "booked30": null,
@@ -113,16 +113,16 @@
    },
    "deliver": {
     "emailValidity": 100,
-    "emailCoverage": 92,
+    "emailCoverage": 91,
     "invalidEmails": 0,
-    "missingEmails": 274,
+    "missingEmails": 309,
     "bounceRate": null,
     "smsOptOutRate": null,
     "a2p": null,
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 46,
+    "smsSent": 51,
     "smsFailed": 0,
     "smsFailRate": 0,
     "callTotal": 6,
@@ -131,7 +131,7 @@
     "callFailRate": 50,
     "avgCallSec": 14,
     "shortCalls": 2,
-    "emailSent": 287,
+    "emailSent": 291,
     "conversationsSampled": 100,
     "error": null
    },

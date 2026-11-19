@@ -1,5 +1,5 @@
 {
- "synced": "2026-11-18T23:54:51.129Z",
+ "synced": "2026-11-19T06:01:46.056Z",
  "source": "api",
  "clients": [
   {
@@ -13,7 +13,7 @@
    "website": "https://culpepperlawgroup.com",
    "totalContacts": 3437,
    "leads": {
-    "d30": 171,
+    "d30": 170,
     "prev30": 129,
     "trend": [
      1,
@@ -41,8 +41,8 @@
      0,
      3,
      1,
-     0,
      1,
+     0,
      0,
      2,
      4

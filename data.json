@@ -1,5 +1,5 @@
 {
- "synced": "2026-11-24T17:00:08.105Z",
+ "synced": "2026-11-25T01:56:01.882Z",
  "source": "api",
  "clients": [
   {
@@ -13,15 +13,14 @@
    "website": "https://culpepperlawgroup.com",
    "totalContacts": 3442,
    "leads": {
-    "d30": 218,
-    "prev30": 106,
+    "d30": 221,
+    "prev30": 107,
     "trend": [
-     0,
-     5,
-     2,
+     4,
+     3,
      1,
-     2,
-     8,
+     1,
+     9,
      0,
      1,
      3,
@@ -31,21 +30,22 @@
      2,
      0,
      0,
-     2,
-     2,
+     1,
+     3,
      0,
      3,
      1,
-     1,
      0,
      1,
-     1,
+     0,
+     2,
      4,
-     4,
-     35,
+     0,
+     39,
+     0,
      1,
-     10,
-     4
+     14,
+     3
     ],
     "trendPartial": true,
     "sources": [
@@ -54,11 +54,11 @@
       58
      ],
      [
-      "Facebook / Meta Ads",
+      "Unattributed",
       20
      ],
      [
-      "Unattributed",
+      "Facebook / Meta Ads",
       20
      ],
      [
@@ -69,13 +69,13 @@
     "topCampaign": null
    },
    "pipeline": {
-    "open": 1323,
+    "open": 1320,
     "openValueSample": 310000,
     "openSampleSize": 100,
-    "won30": 137,
+    "won30": 143,
     "lost30": 71,
-    "wonValue": 600747,
-    "avgDaysToClose": 4,
+    "wonValue": 508747,
+    "avgDaysToClose": 5,
     "stalled": 60,
     "stalledSampled": true,
     "noValueCount": 63,
@@ -104,8 +104,8 @@
     ]
    },
    "speed": {
-    "avgFirstResponseMin": 1331,
-    "pctUnder5": 50
+    "avgFirstResponseMin": 0,
+    "pctUnder5": 100
    },
    "appts": {
     "booked30": null,
@@ -122,16 +122,16 @@
     "domainAuth": null
    },
    "comms": {
-    "smsSent": 48,
+    "smsSent": 41,
     "smsFailed": 1,
-    "smsFailRate": 2.1,
-    "callTotal": 6,
+    "smsFailRate": 2.4,
+    "callTotal": 9,
     "callFailed": 3,
-    "callAnswered": 3,
-    "callFailRate": 50,
-    "avgCallSec": 14,
+    "callAnswered": 6,
+    "callFailRate": 33.3,
+    "avgCallSec": 40,
     "shortCalls": 2,
-    "emailSent": 388,
+    "emailSent": 359,
     "conversationsSampled": 100,
     "error": null
    },
